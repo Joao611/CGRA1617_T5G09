@@ -59,10 +59,13 @@ LightingScene.prototype.init = function(application) {
 
 	this.setUpdatePeriod(100);
 
-	this.translate(-1, 0, 0);
-	this.rotate(Math.PI/2, 0, 1, 0);
-	this.subOrientation = [1, 0, 0];
-	this.subMatrix = this.getMatrix();
+	this.pushMatrix();
+		this.loadIdentity();
+		this.translate(-1, 0, 0);
+		this.rotate(Math.PI/2, 0, 1, 0);
+		this.subMatrix = this.getMatrix();
+		this.subOrientation = [1, 0, 0];
+	this.popMatrix();
 }
 
 LightingScene.prototype.initCameras = function() {
@@ -180,7 +183,7 @@ LightingScene.prototype.moveSubmarine = function(forward) {
 	let subMovement = 1;
 	let subOrientCopy = this.subOrientation;
 	this.pushMatrix();
-		this.setMatrix(this.subMatrix);
+		this.loadIdentity();
 		if (forward) {
 			let transArg = subOrientCopy.map(x => x * subMovement);
 			this.translate(transArg[0], transArg[1], transArg[2]);
@@ -188,6 +191,7 @@ LightingScene.prototype.moveSubmarine = function(forward) {
 			let transArg = subOrientCopy.map(x => x * -subMovement);
 			this.translate(transArg[0], transArg[1], transArg[2]);
 		}
+		this.multMatrix(this.subMatrix);
 		this.subMatrix = this.getMatrix();
 	this.popMatrix();
 }
@@ -210,7 +214,8 @@ function translateMatrix(x, y, z) {
 
 function rotateMatrix(a, x, y, z) {
 	return [ Math.cos(a),  0.0,  -Math.sin(a),  0.0,
-             0.0,    1.0,   0.0,    0.0,
+            	 0.0,	   1.0,   	0.0,   		0.0,
              Math.sin(a),  0.0,   Math.cos(a),  0.0,
-             0.0,    0.0,   0.0,    1.0 ];
+             	 0.0,	   0.0,   	0.0,   		1.0 ];
 }
+
