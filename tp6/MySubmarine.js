@@ -1,6 +1,12 @@
 function MySubmarine(scene) {
 	CGFobject.call(this,scene);
 
+	this.x = 0;
+	this.y = 0;
+	this.z = 0;
+	this.xzOrientation = 90; // degrees
+	this.xyOrientation = 0; // degrees
+
 	this.initBuffers();
 };
 

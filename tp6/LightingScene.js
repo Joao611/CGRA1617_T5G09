@@ -64,7 +64,11 @@ LightingScene.prototype.init = function(application) {
 		this.translate(-1, 0, 0);
 		this.rotate(Math.PI/2, 0, 1, 0);
 		this.subMatrix = this.getMatrix();
-		this.subOrientation = [1, 0, 0];
+		this.submarine.x = 0;
+		this.submarine.y = 0;
+		this.submarine.z = 0;
+		this.submarine.xyOrientation = 0;
+		this.submarine.xzOrientation = 0;
 	this.popMatrix();
 }
 
@@ -178,18 +182,28 @@ LightingScene.prototype.doSomething = function() {
 	console.log("Doing something...");
 };
 
+//(0, 0) rads = [1, 0, 0]
+function getOrientationVector(xzAngle, xyAngle) {
+	return [Math.cos(xzAngle * degToRad), Math.sin(xyAngle * degToRad), Math.sin(xzAngle * degToRad)];
+}
+
 // forward: bool
 LightingScene.prototype.moveSubmarine = function(forward) {
 	let subMovement = 1;
-	let subOrientCopy = this.subOrientation;
 	this.pushMatrix();
 		this.loadIdentity();
 		if (forward) {
-			let transArg = subOrientCopy.map(x => x * subMovement);
+			let transArg = getOrientationVector(this.submarine.xzOrientation, this.submarine.xyOrientation).map(x => x * subMovement);
 			this.translate(transArg[0], transArg[1], transArg[2]);
+			this.submarine.x += transArg[0];
+			this.submarine.y += transArg[1];
+			this.submarine.z += transArg[2];
 		} else {
-			let transArg = subOrientCopy.map(x => x * -subMovement);
+			let transArg = getOrientationVector(this.submarine.xzOrientation, this.submarine.xyOrientation).map(x => x * -subMovement);
 			this.translate(transArg[0], transArg[1], transArg[2]);
+			this.submarine.x += transArg[0];
+			this.submarine.y += transArg[1];
+			this.submarine.z += transArg[2];
 		}
 		this.multMatrix(this.subMatrix);
 		this.subMatrix = this.getMatrix();
@@ -198,24 +212,20 @@ LightingScene.prototype.moveSubmarine = function(forward) {
 
 // right: bool
 LightingScene.prototype.rotateSubmarine = function(right) {
-	if (right) {
-
-	} else {
-
-	}
+	let rotAng = 45; // degrees
+	this.pushMatrix();
+		this.loadIdentity();
+		this.translate(this.submarine.x, this.submarine.y, this.submarine.z); //move back to actual position
+		if (right) {
+			this.rotate(rotAng * degToRad, 0, 1, 0);
+			this.submarine.xzOrientation -= rotAng;
+		} else {
+			this.rotate(-rotAng * degToRad, 0, 1, 0);
+			this.submarine.xzOrientation += rotAng;
+		}
+		this.submarine.xzOrientation %= 360;
+		this.translate(-this.submarine.x, -this.submarine.y, -this.submarine.z); //move to origin
+		this.multMatrix(this.subMatrix);
+		this.subMatrix = this.getMatrix();
+	this.popMatrix();
 }
-
-function translateMatrix(x, y, z) {
-	return [  1.0, 0.0, 0.0, x,
-              0.0, 1.0, 0.0, y,
-              0.0, 0.0, 1.0, z,
-              5.0, 0.0, 2.0, 1.0  ];
-}
-
-function rotateMatrix(a, x, y, z) {
-	return [ Math.cos(a),  0.0,  -Math.sin(a),  0.0,
-            	 0.0,	   1.0,   	0.0,   		0.0,
-             Math.sin(a),  0.0,   Math.cos(a),  0.0,
-             	 0.0,	   0.0,   	0.0,   		1.0 ];
-}
-
