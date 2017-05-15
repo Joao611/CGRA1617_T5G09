@@ -30,18 +30,42 @@ MyInterface.prototype.init = function(application) {
 	// the identifier 'doSomething' must be a function declared as part of that object (i.e. a member of the scene class)
 	// e.g. LightingScene.prototype.doSomething = function () { console.log("Doing something..."); }; 
 
-	this.gui.add(this.scene, 'doSomething');	
+	this.gui.add(this.scene, 'Clock');	
 
 	// add a group of controls (and open/expand by defult)
 	
-	var group=this.gui.addFolder("Options");
+	var group=this.gui.addFolder("Lights");
 	group.open();
 
 	// add two check boxes to the group. The identifiers must be members variables of the scene initialized in scene.init as boolean
 	// e.g. this.option1=true; this.option2=false;
 	
-	group.add(this.scene, 'option1');
-	group.add(this.scene, 'option2');
+	let light0 = group.add(this.scene, 'light0');
+	let light1 = group.add(this.scene, 'light1');
+	let light2 = group.add(this.scene, 'light2');
+
+	let self = this;
+	light0.onChange(function(value) {
+		if (value) {
+			self.scene.lights[0].enable();
+		} else {
+			self.scene.lights[0].disable();
+		}
+	});
+	light1.onChange(function(value) {
+		if (value) {
+			self.scene.lights[1].enable();
+		} else {
+			self.scene.lights[1].disable();
+		}
+	});
+	light2.onChange(function(value) {
+		if (value) {
+			self.scene.lights[2].enable();
+		} else {
+			self.scene.lights[2].disable();
+		}
+	});
 	
 	// add a slider
 	// must be a numeric variable of the scene, initialized in scene.init e.g.

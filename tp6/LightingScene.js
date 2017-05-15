@@ -16,8 +16,9 @@ LightingScene.prototype.constructor = LightingScene;
 LightingScene.prototype.init = function(application) {
 	CGFscene.prototype.init.call(this, application);
 
-	this.option1 = true;
-	this.option2 = false;
+	this.light0 = false;
+	this.light1 = false;
+	this.light2 = false;
 	this.speed = 3;
 
 	this.initCameras();
@@ -93,11 +94,13 @@ LightingScene.prototype.initLights = function() {
 	this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
 	this.lights[0].setSpecular(1.0, 1.0, 1.0, 1.0);
 	this.lights[0].enable();
+	this.light0 = true;
 
 	this.lights[1].setAmbient(0, 0, 0, 1);
 	this.lights[1].setDiffuse(1.0, 1.0, 1.0, 1.0);
 	this.lights[1].setSpecular(1.0, 1.0, 1.0, 1.0);
 	this.lights[1].enable();
+	this.light1 = true;
 
 	this.lights[2].setAmbient(0, 0, 0, 1);
 	this.lights[2].setDiffuse(1.0, 1.0, 1.0, 1.0);
@@ -107,6 +110,7 @@ LightingScene.prototype.initLights = function() {
 	this.lights[2].setLinearAttenuation(1.0);
 	this.lights[2].setQuadraticAttenuation(0.0);
 	this.lights[2].enable();
+	this.light2 = true;
 };
 
 LightingScene.prototype.updateLights = function() {
@@ -178,8 +182,8 @@ LightingScene.prototype.update = function(currTime) {
 	this.clock.update(currTime);
 };
 
-LightingScene.prototype.doSomething = function() {
-	console.log("Doing something...");
+LightingScene.prototype.Clock = function() {
+	this.clock.work(!this.clock.working);
 };
 
 //(0, 0) rads = [1, 0, 0]

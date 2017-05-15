@@ -6,6 +6,8 @@ function MyClock(scene) {
     this.slices = 12;
     this.stacks = 1;
 
+    this.working = 1;
+
 	this.cylinder = new MyCylinder(scene, this.slices, this.stacks);
 	this.face = new MyCircle(scene, this.slices);
 	this.hourHand = new MyClockHand(scene, 0.15);
@@ -23,6 +25,10 @@ function MyClock(scene) {
 MyClock.prototype = Object.create(CGFobject.prototype);
 MyClock.prototype.constructor = MyClock;
 
+
+MyClock.prototype.work = function (work) {
+	this.working = work;
+}
 
 MyClock.prototype.display = function () {
 	this.scene.pushMatrix();
@@ -63,6 +69,10 @@ MyClock.prototype.display = function () {
 }
 
 MyClock.prototype.update = function(currTime) {
+
+	if (!this.working)
+		return;
+	
 	let seconds = (currTime / 1000) % 60;
 	let minutes = (currTime / (1000 * 60)) % 60;
 	let hours = (currTime / (1000 * 60 * 60)) % 24;
