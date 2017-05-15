@@ -29,6 +29,7 @@ function MySubmarine(scene) {
 
 	this.towerSide = new MyCylinder(scene, 12, 8);
 	this.towerTop = new MyCircle(scene, 12);
+	this.periscope = new MyPeriscope(scene, 12, 8);
 };
 
 MySubmarine.prototype = Object.create(CGFobject.prototype);
@@ -68,6 +69,8 @@ MySubmarine.prototype.display = function() {
 		this.scene.rotate(-Math.PI/2, 1, 0, 0);
 		this.towerTop.display();
 	this.scene.popMatrix();
+
+	this.periscope.display();
 
 
 //     this.primitiveType = this.scene.gl.TRIANGLES;
