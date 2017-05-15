@@ -12,6 +12,7 @@ let RUDDER_BIG_HEIGHT = 2.34;
 
 // Custom measurements
 let CYLINDER_HEIGHT = 1;
+let TOWER_WIDTH = 0.55;
 
 function MySubmarine(scene) {
 	CGFobject.call(this,scene);
@@ -25,6 +26,9 @@ function MySubmarine(scene) {
 	this.frontSphere = new MyLamp(scene, 12, 8);
 	this.mainCylinder = new MyCylinder(scene, 12, 8);
 	this.rearSphere = new MyLamp(scene, 12, 8);
+
+	this.towerSide = new MyCylinder(scene, 12, 8);
+	this.towerTop = new MyCircle(scene, 12);
 };
 
 MySubmarine.prototype = Object.create(CGFobject.prototype);
@@ -52,6 +56,18 @@ MySubmarine.prototype.display = function() {
  		this.frontSphere.display();
   	this.scene.popMatrix();
 
+	this.scene.pushMatrix();
+		this.scene.scale(TOWER_LENGTH, CYLINDER_HEIGHT + TOWER_HEIGHT, TOWER_WIDTH);
+		this.scene.rotate(-Math.PI/2, 1, 0, 0);
+		this.towerSide.display();
+	this.scene.popMatrix();
+
+	this.scene.pushMatrix();
+		this.scene.translate(0, CYLINDER_HEIGHT + TOWER_HEIGHT, 0);
+		this.scene.scale(TOWER_LENGTH, 1, TOWER_WIDTH);
+		this.scene.rotate(-Math.PI/2, 1, 0, 0);
+		this.towerTop.display();
+	this.scene.popMatrix();
 
 
 //     this.primitiveType = this.scene.gl.TRIANGLES;
