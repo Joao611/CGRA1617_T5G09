@@ -23,6 +23,7 @@ function MySubmarine(scene) {
 	this.xyOrientation = 0; // degrees //TODO
 
 	this.frontSphere = new MyLamp(scene, 12, 8);
+	this.mainCylinder = new MyCylinder(scene, 12, 8);
 	this.rearSphere = new MyLamp(scene, 12, 8);
 };
 
@@ -31,17 +32,27 @@ MySubmarine.prototype.constructor = MySubmarine;
 
 MySubmarine.prototype.display = function() {
 	this.scene.pushMatrix();
-		this.scene.translate(0, 0, -SEMISPHERE_LENGTH);
+		this.scene.translate(-CYLINDER_LENGTH/2, 0, 0);
+		this.scene.rotate(-Math.PI/2, 0, 1, 0);
 		this.scene.scale(CYLINDER_WIDTH, CYLINDER_HEIGHT, SEMISPHERE_LENGTH);
 		this.rearSphere.display();
 	this.scene.popMatrix();
 
-	this.scene.pushMatrix();
-		this.scene.translate(0, 0, -SEMISPHERE_LENGTH - CYLINDER_LENGTH);
-		this.scene.rotate(Math.PI, 0, 1, 0);
-		this.scene.scale(CYLINDER_WIDTH, CYLINDER_HEIGHT, SEMISPHERE_LENGTH);
-		this.frontSphere.display();
-	this.scene.popMatrix();
+ 	this.scene.pushMatrix();
+ 		this.scene.translate(-CYLINDER_LENGTH/2, 0, 0);
+		this.scene.rotate(Math.PI/2, 0, 1, 0);
+ 		this.scene.scale(CYLINDER_WIDTH, CYLINDER_HEIGHT, CYLINDER_LENGTH);
+ 		this.mainCylinder.display();
+ 	this.scene.popMatrix();
+
+ 	this.scene.pushMatrix();
+ 		this.scene.translate(CYLINDER_LENGTH/2, 0, 0);
+ 		this.scene.rotate(Math.PI/2, 0, 1, 0);
+ 		this.scene.scale(CYLINDER_WIDTH, CYLINDER_HEIGHT, SEMISPHERE_LENGTH);
+ 		this.frontSphere.display();
+  	this.scene.popMatrix();
+
+
 
 //     this.primitiveType = this.scene.gl.TRIANGLES;
 // 	this.initGLBuffers();
