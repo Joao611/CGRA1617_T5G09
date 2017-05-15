@@ -7,8 +7,6 @@ function MyCylinder(scene, slices, stacks) {
 
 	this.slices = slices;
 	this.stacks = stacks;
-// 	this.numTops = numTops || 0;
-// 	this.isclock = isclock || 0;
 
 	this.initBuffers();
 };
