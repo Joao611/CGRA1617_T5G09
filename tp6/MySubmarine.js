@@ -7,28 +7,33 @@ function MySubmarine(scene) {
 	this.xzOrientation = 90; // degrees
 	this.xyOrientation = 0; // degrees
 
-	this.initBuffers();
+// 	this.initBuffers();
+
+	this.frontSphere = new MyLamp(scene, 12, 8);
+	this.rearSphere = new MyLamp(scene, 12, 8);
 };
 
 MySubmarine.prototype = Object.create(CGFobject.prototype);
 MySubmarine.prototype.constructor = MySubmarine;
 
-MySubmarine.prototype.initBuffers = function() {
-    this.vertices = [];
-    this.normals = [];
-    this.indices = [];
-    this.texCoords = [];
+MySubmarine.prototype.display = function() {
+	this.frontSphere.display();
+	this.rearSphere.display();
+//     this.vertices = [];
+//     this.normals = [];
+//     this.indices = [];
+//     this.texCoords = [];
 
-    this.vertices.push(0.5, 0.3, 0);
-    this.vertices.push(-0.5, 0.3, 0);
-    this.vertices.push(0, 0.3, 2);
+//     this.vertices.push(0.5, 0.3, 0);
+//     this.vertices.push(-0.5, 0.3, 0);
+//     this.vertices.push(0, 0.3, 2);
 
-    this.normals.push(0, 1, 0);
-    this.normals.push(0, 1, 0);
-    this.normals.push(0, 1, 0);
+//     this.normals.push(0, 1, 0);
+//     this.normals.push(0, 1, 0);
+//     this.normals.push(0, 1, 0);
     
-    this.indices.push(2, 0, 1);
+//     this.indices.push(2, 0, 1);
 
-    this.primitiveType = this.scene.gl.TRIANGLES;
-	this.initGLBuffers();
+//     this.primitiveType = this.scene.gl.TRIANGLES;
+// 	this.initGLBuffers();
 }
