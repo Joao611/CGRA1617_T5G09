@@ -89,7 +89,7 @@ MyInterface.prototype.processKeyboard = function(event) {
 	// or use String.fromCharCode(event.keyCode) to compare chars
 	
 	// for better cross-browser support, you may also check suggestions on using event.which in http://www.w3schools.com/jsref/event_key_keycode.asp
-	switch (String.fromCharCode(event.keyCode).toUpperCase())
+	switch (String.fromCharCode(event.keyCode || event.which).toUpperCase())
 	{
 		case ('W'):
 			this.scene.moveSubmarine(true);
