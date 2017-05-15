@@ -62,15 +62,15 @@ LightingScene.prototype.init = function(application) {
 
 	this.pushMatrix();
 		this.loadIdentity();
-		this.translate(-1, 0, 0);
-		this.rotate(Math.PI/2, 0, 1, 0);
+	//	this.translate(-1, 0, 0);
+	//	this.rotate(Math.PI/2, 0, 1, 0);
 		this.subMatrix = this.getMatrix();
-		this.submarine.x = 0;
-		this.submarine.y = 0;
-		this.submarine.z = 0;
-		this.submarine.xyOrientation = 0;
-		this.submarine.xzOrientation = 0;
 	this.popMatrix();
+	this.submarine.x = 0;
+	this.submarine.y = 0;
+	this.submarine.z = 0;
+	this.submarine.xyOrientation = 0;
+	this.submarine.xzOrientation = 0;
 }
 
 LightingScene.prototype.initCameras = function() {
@@ -151,13 +151,13 @@ LightingScene.prototype.display = function() {
 		this.submarine.display();
 	this.popMatrix();
 
-	// Sea
-	this.pushMatrix();
+	// Sea - DISABLED FOR SUB BUILDING
+/*	this.pushMatrix();
 		this.seaMaterial.apply();
 		this.rotate(-Math.PI/2, 1, 0, 0);
 		this.scale(60, 60, 60);
 		this.sea.display();
-	this.popMatrix();
+	this.popMatrix(); */
 
 	// Clock
 	this.pushMatrix();
