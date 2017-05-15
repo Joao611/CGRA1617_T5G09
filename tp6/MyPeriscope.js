@@ -4,8 +4,8 @@ let PERISCOPE_DIAMETER = 0.1;
 function MyPeriscope(scene, slices, stacks) {
 	CGFobject.call(this, scene);
 
-	this.tallCylinder = new MyCylinder(scene, slices, stacks);
-	this.topCylinder = new MyCylinder(scene, slices, stacks);
+	this.tallCylinder = new MyClosedCylinder(scene, slices, stacks);
+	this.topCylinder = new MyClosedCylinder(scene, slices, stacks);
 }
 
 MyPeriscope.prototype = Object.create(CGFobject.prototype);

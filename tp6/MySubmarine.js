@@ -38,43 +38,45 @@ MySubmarine.prototype = Object.create(CGFobject.prototype);
 MySubmarine.prototype.constructor = MySubmarine;
 
 MySubmarine.prototype.display = function() {
-// 	this.scene.pushMatrix();
-// 		this.scene.translate(-CYLINDER_LENGTH/2, 0, 0);
-// 		this.scene.rotate(-Math.PI/2, 0, 1, 0);
-// 		this.scene.scale(CYLINDER_WIDTH, CYLINDER_HEIGHT, SEMISPHERE_LENGTH);
-// 		this.rearSphere.display();
-// 	this.scene.popMatrix();
+	this.scene.pushMatrix();
+		this.scene.translate(-CYLINDER_LENGTH/2, 0, 0);
+		this.scene.rotate(-Math.PI/2, 0, 1, 0);
+		this.scene.scale(CYLINDER_WIDTH, CYLINDER_HEIGHT, SEMISPHERE_LENGTH);
+		this.rearSphere.display();
+	this.scene.popMatrix();
 
-//  	this.scene.pushMatrix();
-//  		this.scene.translate(-CYLINDER_LENGTH/2, 0, 0);
-// 		this.scene.rotate(Math.PI/2, 0, 1, 0);
-//  		this.scene.scale(CYLINDER_WIDTH, CYLINDER_HEIGHT, CYLINDER_LENGTH);
-//  		this.mainCylinder.display();
-//  	this.scene.popMatrix();
+ 	this.scene.pushMatrix();
+ 		this.scene.translate(-CYLINDER_LENGTH/2, 0, 0);
+		this.scene.rotate(Math.PI/2, 0, 1, 0);
+ 		this.scene.scale(CYLINDER_WIDTH, CYLINDER_HEIGHT, CYLINDER_LENGTH);
+ 		this.mainCylinder.display();
+ 	this.scene.popMatrix();
 
-//  	this.scene.pushMatrix();
-//  		this.scene.translate(CYLINDER_LENGTH/2, 0, 0);
-//  		this.scene.rotate(Math.PI/2, 0, 1, 0);
-//  		this.scene.scale(CYLINDER_WIDTH, CYLINDER_HEIGHT, SEMISPHERE_LENGTH);
-//  		this.frontSphere.display();
-//   	this.scene.popMatrix();
+ 	this.scene.pushMatrix();
+ 		this.scene.translate(CYLINDER_LENGTH/2, 0, 0);
+ 		this.scene.rotate(Math.PI/2, 0, 1, 0);
+ 		this.scene.scale(CYLINDER_WIDTH, CYLINDER_HEIGHT, SEMISPHERE_LENGTH);
+ 		this.frontSphere.display();
+  	this.scene.popMatrix();
 
-// 	this.scene.pushMatrix();
-// 		this.scene.scale(TOWER_LENGTH, CYLINDER_HEIGHT + TOWER_HEIGHT, TOWER_WIDTH);
-// 		this.scene.rotate(-Math.PI/2, 1, 0, 0);
-// 		this.towerSide.display();
-// 	this.scene.popMatrix();
+	this.scene.pushMatrix();
+		this.scene.scale(TOWER_LENGTH, CYLINDER_HEIGHT + TOWER_HEIGHT, TOWER_WIDTH);
+		this.scene.rotate(-Math.PI/2, 1, 0, 0);
+		this.towerSide.display();
+	this.scene.popMatrix();
 
-// 	this.scene.pushMatrix();
-// 		this.scene.translate(0, CYLINDER_HEIGHT + TOWER_HEIGHT, 0);
-// 		this.scene.scale(TOWER_LENGTH, 1, TOWER_WIDTH);
-// 		this.scene.rotate(-Math.PI/2, 1, 0, 0);
-// 		this.towerTop.display();
-// 	this.scene.popMatrix();
+	this.scene.pushMatrix();
+		this.scene.translate(0, CYLINDER_HEIGHT + TOWER_HEIGHT, 0);
+		this.scene.scale(TOWER_LENGTH, 1, TOWER_WIDTH);
+		this.scene.rotate(-Math.PI/2, 1, 0, 0);
+		this.towerTop.display();
+	this.scene.popMatrix();
 
-//	this.periscope.display();
-
-	this.cylinder.display();
+	this.scene.pushMatrix();
+		this.scene.translate(0, CYLINDER_HEIGHT, 0);
+		this.scene.rotate(Math.PI/2, 0, 1, 0);
+ 		this.periscope.display();
+ 	this.scene.popMatrix();
 
 //     this.primitiveType = this.scene.gl.TRIANGLES;
 // 	this.initGLBuffers();
