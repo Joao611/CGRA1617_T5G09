@@ -36,6 +36,8 @@ function MySubmarine(scene) {
 
 	this.propeller = new MyPropeller(scene, 12, 8);
 
+	this.towerElevator = new MyTrapeze(scene);
+	this.rearElevator = new MyTrapeze(scene);
 	this.rudder = new MyTrapeze(scene);
 };
 
@@ -84,14 +86,14 @@ MySubmarine.prototype.display = function() {
   	this.scene.popMatrix();
 
 	this.scene.pushMatrix();
-		this.scene.translate(CYLINDER_LENGTH/2, -CYLINDER_HEIGHT/4, -CYLINDER_WIDTH/2 - PROP_DIAMETER/2);
+		this.scene.translate(-CYLINDER_LENGTH/2, -CYLINDER_HEIGHT/4, -CYLINDER_WIDTH/2 - PROP_DIAMETER/2);
 		this.scene.rotate(Math.PI/2, 0, 1, 0);
 		this.scene.scale(PROP_DIAMETER/2, PROP_DIAMETER/2,  PROP_LENGTH);
 		this.propeller.display();
 	this.scene.popMatrix();
 
 	this.scene.pushMatrix();
-		this.scene.translate(CYLINDER_LENGTH/2, -CYLINDER_HEIGHT/4, CYLINDER_WIDTH/2 + PROP_DIAMETER/2);
+		this.scene.translate(-CYLINDER_LENGTH/2, -CYLINDER_HEIGHT/4, CYLINDER_WIDTH/2 + PROP_DIAMETER/2);
 		this.scene.rotate(Math.PI/2, 0, 1, 0);
 		this.scene.scale(PROP_DIAMETER/2, PROP_DIAMETER/2,  PROP_LENGTH);
 		this.propeller.display();
@@ -100,9 +102,18 @@ MySubmarine.prototype.display = function() {
 	// Rudder
 	// 2.34 = trapezoid height
 	this.scene.pushMatrix();
-		this.scene.translate(CYLINDER_LENGTH/2, 0, 0);
-		//this.scene.scale(-1, RUDDER_BIG_HEIGHT/2.34, -1);
-		//this.scene.rotate(-Math.PI/2, 0, 1, 0);
+		this.scene.translate(-CYLINDER_LENGTH/2, 0, 0);
+		this.scene.scale(-1, RUDDER_BIG_HEIGHT/2.34, -1);
+		this.scene.rotate(Math.PI/2, 0, 1, 0);
 		this.rudder.display();
+	this.scene.popMatrix();
+
+	// Rear Elevator
+	this.scene.pushMatrix();
+		this.scene.translate(-CYLINDER_LENGTH/2, 0, 0);
+		this.scene.scale(1, 1, RUDDER_BIG_HEIGHT/2.34);
+		this.scene.rotate(-Math.PI/2, 0, 0, 1);
+		this.scene.rotate(Math.PI/2, 1, 0, 0);
+		this.rearElevator.display();
 	this.scene.popMatrix();
 }

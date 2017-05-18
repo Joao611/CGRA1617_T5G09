@@ -1,12 +1,12 @@
+// These commented variables may not work as expected by directly changing them.
 // Big height: 2.34
 // Small height: 1.64
 // Width: 0.5
-// Thickness: 0.2
 
 let BIG_HEIGHT = 2.34;
 let SMALL_HEIGHT = 1.64
 let WIDTH = 0.5;
-let THICKNESS = 0.2;
+let THICKNESS = 0.09;
 let TOP_ANGLE = WIDTH * Math.cos(45 * degToRad);
 
 function MyTrapeze(scene) {
@@ -25,31 +25,31 @@ MyTrapeze.prototype.constructor = MyTrapeze;
 
 MyTrapeze.prototype.initBuffers = function () {
 	this.vertices = [
-            -0.1, -1.17, 0.25,
-            0.1, -1.17, 0.25,
-            -0.1, 1.17, 0.25,
-            0.1, 1.17, 0.25, //Face frente  0 a 3
-            -0.1, -0.82, -0.25,
-            0.1, -0.82, -0.25,
-            -0.1, 0.82, -0.25,
-            0.1, 0.82, -0.25,  //Face tras  4 a 7
-            0.1, -1.17, 0.25,
-            0.1, -0.82, -0.25,
-			0.1, 1.17, 0.25,
-			0.1, 0.82, -0.25, //Face direita   8 a 11
-			-0.1, -1.17, 0.25,
-			-0.1, -0.82, -0.25,
-			-0.1, 1.17, 0.25,
-			-0.1, 0.82, -0.25, //Face esquerda   12 a 15
-			-0.1, -1.17, 0.25,
-			0.1, -1.17, 0.25,
-			-0.1, -0.82, -0.25,
-			0.1, -0.82, -0.25, //Face baixo   16 a 19
-			-0.1, 1.17, 0.25,
-			0.1, 1.17, 0.25,
-			-0.1, 0.82, -0.25,
-			0.1, 0.82, -0.25,  // Face cima    20 a 23
-            			];
+            -THICKNESS/2, -1.17, 0.25,
+            THICKNESS/2, -1.17, 0.25,
+            -THICKNESS/2, 1.17, 0.25,
+            THICKNESS/2, 1.17, 0.25, //Face frente  0 a 3
+            -THICKNESS/2, -0.82, -0.25,
+            THICKNESS/2, -0.82, -0.25,
+            -THICKNESS/2, 0.82, -0.25,
+            THICKNESS/2, 0.82, -0.25,  //Face tras  4 a 7
+            THICKNESS/2, -1.17, 0.25,
+            THICKNESS/2, -0.82, -0.25,
+			THICKNESS/2, 1.17, 0.25,
+			THICKNESS/2, 0.82, -0.25, //Face direita   8 a 11
+			-THICKNESS/2, -1.17, 0.25,
+			-THICKNESS/2, -0.82, -0.25,
+			-THICKNESS/2, 1.17, 0.25,
+			-THICKNESS/2, 0.82, -0.25, //Face esquerda   12 a 15
+			-THICKNESS/2, -1.17, 0.25,
+			THICKNESS/2, -1.17, 0.25,
+			-THICKNESS/2, -0.82, -0.25,
+			THICKNESS/2, -0.82, -0.25, //Face baixo   16 a 19
+			-THICKNESS/2, 1.17, 0.25,
+			THICKNESS/2, 1.17, 0.25,
+			-THICKNESS/2, 0.82, -0.25,
+			THICKNESS/2, 0.82, -0.25,  // Face cima    20 a 23
+	];
 
 	this.indices = [
            0,1,2,
@@ -66,7 +66,7 @@ MyTrapeze.prototype.initBuffers = function () {
            20,23,22 //Face de cima
          ];
 
-     this.normals = [
+	this.normals = [
  	0,0,1,
  	0,0,1,
  	0,0,1,
