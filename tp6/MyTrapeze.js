@@ -6,7 +6,7 @@
 let BIG_HEIGHT = 2.34;
 let SMALL_HEIGHT = 1.64
 let WIDTH = 0.5;
-let THICKNESS = 0.09;
+let THICKNESS = 0.05;
 let TOP_ANGLE = WIDTH * Math.cos(45 * degToRad);
 
 function MyTrapeze(scene) {
@@ -52,19 +52,19 @@ MyTrapeze.prototype.initBuffers = function () {
 	];
 
 	this.indices = [
-           0,1,2,
-           1,3,2, //Face da frente
-           8,9,11,
-           8,11,10, //Face da direita
-           12,15,13,
-           12,14,15, //Face da esquerda
-           4,6,5,
-           5,6,7, //Face da tras
-           16,19,17,
-           16,18,19, //Face de baixo
-           20,21,23,
-           20,23,22 //Face de cima
-         ];
+		0,1,2,
+    	1,3,2, //Face da frente
+    	8,9,11,
+    	8,11,10, //Face da direita
+		12,15,13,
+		12,14,15, //Face da esquerda
+		4,6,5,
+		5,6,7, //Face da tras
+		16,19,17,
+		16,18,19, //Face de baixo
+        20,21,23,
+        20,23,22 //Face de cima
+	];
 
 	this.normals = [
  	0,0,1,
