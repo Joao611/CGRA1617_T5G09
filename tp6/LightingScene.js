@@ -38,6 +38,7 @@ LightingScene.prototype.init = function(application) {
 	this.sea = new MyQuad(this, 0, 15, 0, 15);
 	this.clock = new MyClock(this);
 	this.post = new MyCylinder(this, 12, 1);
+	
 
 	// Materials
 	this.defaultMaterial = new CGFappearance(this);
@@ -48,7 +49,7 @@ LightingScene.prototype.init = function(application) {
 	this.seaMaterial.loadTexture("/resources/images/sand_scaled.jpg");
 	this.seaMaterial.setSpecular(seaSpecular, seaSpecular, seaSpecular, 1);
 	this.seaMaterial.setDiffuse(seaDiffuse, seaDiffuse, seaDiffuse, 1);
-	
+
 	this.clockSideAppearance = new CGFappearance(this);
 
 	this.clockFaceAppearance = new CGFappearance(this);
@@ -165,6 +166,9 @@ LightingScene.prototype.display = function() {
 		this.translate(8, 5, 0);
 		this.clock.display();
 	this.popMatrix();
+
+
+
 
 	// Post
 	this.pushMatrix();

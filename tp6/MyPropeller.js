@@ -12,6 +12,7 @@ function MyPropeller(scene, slices, stacks) {
     this.centerSphereHalf = new MyLamp(scene, slices, stacks);
     this.blade = new MyUnitCubeQuad(scene);
     this.casing = new MyTwoSidedCylinder(scene, slices, stacks);
+
 }
 
 MyPropeller.prototype = Object.create(CGFobject.prototype);
