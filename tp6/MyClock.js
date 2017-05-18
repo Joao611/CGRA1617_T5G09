@@ -1,6 +1,6 @@
 function MyClock(scene) {
 	CGFobject.call(this, scene);
-	
+
 	this.scene = scene;
 	this.clockHeight = 0.2;
     this.slices = 12;
@@ -36,7 +36,7 @@ MyClock.prototype.display = function () {
 		this.scene.scale(1, 1, this.clockHeight);
   		this.cylinder.display();
     this.scene.popMatrix();
-	
+
 	this.scene.pushMatrix();
  		this.scene.clockFaceAppearance.apply();
  		this.scene.translate(0, 0, this.clockHeight);
@@ -63,7 +63,7 @@ MyClock.prototype.display = function () {
   		this.scene.scale(0.9, 0.9, 1);
   		this.secondHand.display();
   	this.scene.popMatrix();
-    
+
     this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
 }
@@ -72,11 +72,11 @@ MyClock.prototype.update = function(currTime) {
 
 	if (!this.working)
 		return;
-	
+
 	let seconds = (currTime / 1000) % 60;
 	let minutes = (currTime / (1000 * 60)) % 60;
 	let hours = (currTime / (1000 * 60 * 60)) % 24;
-	
+
 	let hourAngle = hours * 30;
 	let minuteAngle = -minutes * 6;
 	let secondAngle = -seconds * 6;
@@ -84,4 +84,5 @@ MyClock.prototype.update = function(currTime) {
 	this.hourHand.setAngle(hourAngle);
 	this.minuteHand.setAngle(minuteAngle);
 	this.secondHand.setAngle(secondAngle);
+
 }
