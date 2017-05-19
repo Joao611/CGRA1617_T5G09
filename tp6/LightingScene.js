@@ -207,9 +207,8 @@ function getOrientationVector(xzAngle, xyAngle) {
 
 // forward: bool
 LightingScene.prototype.moveSubmarine = function(forward) {
-	/*
 	let subMovement = 1;
-	this.pushMatrix();
+	/*this.pushMatrix();
 		this.loadIdentity();
 		if (forward) {
 			let transArg = getOrientationVector(this.submarine.xzOrientation, this.submarine.xyOrientation).map(x => x * subMovement);
@@ -228,14 +227,18 @@ LightingScene.prototype.moveSubmarine = function(forward) {
 		this.subMatrix = this.getMatrix();
 	this.popMatrix();
 	*/
-	this.submarine.vel_vec[0] += forward;
+
+	if (forward) {
+		this.submarine.vel_vec[0] += subMovement;		
+	} else {
+		this.submarine.vel_vec[0] -= subMovement;
+	}
 }
 
 // right: bool
 LightingScene.prototype.rotateSubmarine = function(right) {
-	/*
-	let rotAng = 45; // degrees
-	this.pushMatrix();
+	let rotAng = 5; // degrees
+	/*this.pushMatrix();
 		this.loadIdentity();
 		this.translate(this.submarine.x, this.submarine.y, this.submarine.z); //move back to actual position
 		if (right) {
@@ -251,9 +254,12 @@ LightingScene.prototype.rotateSubmarine = function(right) {
 		this.subMatrix = this.getMatrix();
 	this.popMatrix();
 	*/
-
-	this.submarine.update_vec_r[1] += 0.01*right;
-
+	
+	if (right) {
+		this.submarine.update_vec_r[1] += rotAng * degToRad;
+	} else {
+		this.submarine.update_vec_r[1] -= rotAng * degToRad;
+	}
 }
 
 LightingScene.prototype.rotateSubmarine_up = function(up){

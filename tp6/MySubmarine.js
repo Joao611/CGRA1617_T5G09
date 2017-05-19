@@ -21,7 +21,6 @@ let PERISCOPE_HEIGHT = TOWER_HEIGHT;
 let TOWER_ELEVATOR_WIDTH = TOWER_LENGTH/3;
 
 
-
 function sub_vecs(vec1, vec2 ){
 
 	var res = [0,0,0];
@@ -46,21 +45,21 @@ function normalize(vec1){
 }
 
 function m_multiply(a, b) {
-  var aNumRows = a.length;
+	var aNumRows = a.length;
 	var aNumCols = a[0].length;
-  var bNumRows = b.length;
+  	var bNumRows = b.length;
 	var bNumCols = b[0].length;
 	var m = new Array(aNumRows);  // initialize array of rows
 
-  for (var r = 0; r < aNumRows; ++r) {
-    m[r] = new Array(bNumCols); // initialize the current row
-    for (var c = 0; c < bNumCols; ++c) {
-      m[r][c] = 0;             // initialize the current cell
-      for (var i = 0; i < aNumCols; ++i) {
-        m[r][c] += a[r][i] * b[i][c];
-      }
-    }
-  }
+	for (var r = 0; r < aNumRows; ++r) {
+    	m[r] = new Array(bNumCols); // initialize the current row
+    	for (var c = 0; c < bNumCols; ++c) {
+    		m[r][c] = 0;             // initialize the current cell
+    		for (var i = 0; i < aNumCols; ++i) {
+        		m[r][c] += a[r][i] * b[i][c];
+      		}
+    	}
+  	}
   return m;
 }
 
@@ -88,16 +87,13 @@ function crossProduct(a, b) {
   return [a[1]*b[2] - a[2]*b[1],
           a[2]*b[0] - a[0]*b[2],
           a[0]*b[1] - a[1]*b[0]];
-
 }
 
 function vec_norm(vec){
-
 	return Math.sqrt(vec[0]*vec[0] + vec[1]*vec[1] +vec[2]*vec[2]  );
 }
 
 function skew_mat(vec3){
-
 	return [
 		[0, -vec3[2], vec3[1]],
 		[vec3[2], 0, -vec3[1]],
@@ -114,10 +110,11 @@ function add_matrix(mat1, mat2){
 	for(var i = 0; i < 3 ; i++){
 		for(var k = 0; k < 3 ; k++){
 			res[i][k] = mat1[i][k] +  mat2[i][k];
+		}
 	}
+	return res;
 }
-return res;
-}
+
 /*
 function compute_orientation(ori_vec, vel_vec){
 	 let v = vec3.create() //crossProduct(ori_vec, vel_vec);
@@ -131,8 +128,6 @@ function compute_orientation(ori_vec, vel_vec){
 
 	 return (add_matrix( add_matrix(i, v_s), lr));
 } */
-
-
 
 
 function MySubmarine(scene) {
@@ -180,10 +175,10 @@ MySubmarine.prototype.display = function() {
 	//		this.scene.translate(-(CYLINDER_LENGTH/2) - PROP_OFFSET_LENGTH,0,0);
 //				this.scene.multMatrix(this.rot_matrix);
 			//this.scene.translate(this.update_vec[0], this.update_vec[1], this.update_vec[2])
-			this.scene.rotate(this.update_vec_r[0], 1 ,0,0);
-			this.scene.rotate(this.update_vec_r[1], 0,1, 0);
-			this.scene.rotate(this.update_vec_r[2], 0, 0, 1);
-			this.scene.translate(this.update_vec[0], this.update_vec[1], this.update_vec[2])
+		this.scene.rotate(this.update_vec_r[0], 1, 0, 0);
+		this.scene.rotate(this.update_vec_r[1], 0, 1, 0);
+		this.scene.rotate(this.update_vec_r[2], 0, 0, 1);
+		this.scene.translate(this.update_vec[0], this.update_vec[1], this.update_vec[2])
 
  	this.scene.pushMatrix();
  		this.scene.translate(-CYLINDER_LENGTH/2, 0, 0);
