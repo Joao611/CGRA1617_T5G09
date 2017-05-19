@@ -43,7 +43,14 @@ LightingScene.prototype.init = function(application) {
 	this.sea = new MyQuad(this, 0, 15, 0, 15);
 	this.clock = new MyClock(this);
 	this.post = new MyCylinder(this, 12, 1);
+	
+	this.targets = [];
 
+	let target1 = new MyTarget(this, 6, 0, 0);
+	this.targets.push(target1);
+
+	let target2 = new MyTarget(this, 0, 0, 6);
+	this.targets.push(target2);
 
 	// Materials
 	this.defaultMaterial = new CGFappearance(this);
@@ -187,6 +194,11 @@ LightingScene.prototype.display = function() {
 		this.rotate(Math.PI/2, 1, 0, 0);
 		this.post.display();
 	this.popMatrix();
+
+	// Targets
+	for (i = 0; i < this.targets.length; i++) {
+		this.targets[i].display();
+	}
 
 	// ---- END Primitive drawing section
 };
