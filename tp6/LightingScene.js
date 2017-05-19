@@ -38,7 +38,7 @@ LightingScene.prototype.init = function(application) {
 	this.sea = new MyQuad(this, 0, 15, 0, 15);
 	this.clock = new MyClock(this);
 	this.post = new MyCylinder(this, 12, 1);
-	
+
 
 	// Materials
 	this.defaultMaterial = new CGFappearance(this);
@@ -59,7 +59,7 @@ LightingScene.prototype.init = function(application) {
  	this.clockHandsAppearance.setSpecular(0,0,0,1);
  	this.clockHandsAppearance.setDiffuse(0,0,0,1);
 
-	this.setUpdatePeriod(100);
+	this.setUpdatePeriod(16.667);
 
 	this.pushMatrix();
 		this.loadIdentity();
@@ -184,6 +184,7 @@ LightingScene.prototype.display = function() {
 
 LightingScene.prototype.update = function(currTime) {
 	this.clock.update(currTime);
+	this.submarine.update(currTime);
 };
 
 LightingScene.prototype.Clock = function() {
@@ -197,6 +198,7 @@ function getOrientationVector(xzAngle, xyAngle) {
 
 // forward: bool
 LightingScene.prototype.moveSubmarine = function(forward) {
+	/*
 	let subMovement = 1;
 	this.pushMatrix();
 		this.loadIdentity();
@@ -216,10 +218,13 @@ LightingScene.prototype.moveSubmarine = function(forward) {
 		this.multMatrix(this.subMatrix);
 		this.subMatrix = this.getMatrix();
 	this.popMatrix();
+	*/
+	this.submarine.vel_vec[0] += forward;
 }
 
 // right: bool
 LightingScene.prototype.rotateSubmarine = function(right) {
+	/*
 	let rotAng = 45; // degrees
 	this.pushMatrix();
 		this.loadIdentity();
@@ -236,4 +241,12 @@ LightingScene.prototype.rotateSubmarine = function(right) {
 		this.multMatrix(this.subMatrix);
 		this.subMatrix = this.getMatrix();
 	this.popMatrix();
+	*/
+
+	this.submarine.update_vec_r[1] += 0.01*right;
+
+}
+
+LightingScene.prototype.rotateSubmarine_up = function(up){
+	this.submarine.update_vec_r[2] += 0.01*up;
 }
