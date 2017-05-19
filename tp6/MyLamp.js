@@ -30,7 +30,8 @@ MyLamp.prototype.initBuffers = function () {
 	
 	this.vertices = [];
 	this.indices = [];
-	this.normals = [];	
+	this.normals = [];
+	this.texCoords = [];
 
 	for (j = 0; j < this.stacks; j++) {
 		var currentStackAng = Math.PI/2 - j*stacksAng;
@@ -41,11 +42,13 @@ MyLamp.prototype.initBuffers = function () {
 			var z = Math.cos(currentStackAng);
 			this.vertices.push(x,y,z);
 			this.normals.push(x,y,z);
+			this.texCoords.push(x/2 + 0.5, y/2 + 0.5);
 		}
 	}
 	// Top of the semi-sphere
 	this.vertices.push(0,0,1);
 	this.normals.push(0,0,1);
+	this.texCoords.push(0.5, 0.5);
 	
 	var vertsPerRing = this.slices;
 	for (j = 0; j < this.stacks - 1; j++) {

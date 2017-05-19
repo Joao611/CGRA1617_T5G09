@@ -34,15 +34,15 @@ MyInterface.prototype.init = function(application) {
 
 	// add a group of controls (and open/expand by defult)
 
-	var group=this.gui.addFolder("Lights");
-	group.open();
+	var lightsGroup = this.gui.addFolder("Lights");
+	lightsGroup.open();
 
 	// add two check boxes to the group. The identifiers must be members variables of the scene initialized in scene.init as boolean
 	// e.g. this.option1=true; this.option2=false;
 
-	let light0 = group.add(this.scene, 'light0');
-	let light1 = group.add(this.scene, 'light1');
-	let light2 = group.add(this.scene, 'light2');
+	let light0 = lightsGroup.add(this.scene, 'light0');
+	let light1 = lightsGroup.add(this.scene, 'light1');
+	let light2 = lightsGroup.add(this.scene, 'light2');
 
 	let self = this;
 	light0.onChange(function(value) {
@@ -71,8 +71,14 @@ MyInterface.prototype.init = function(application) {
 	// must be a numeric variable of the scene, initialized in scene.init e.g.
 	// this.speed=3;
 	// min and max values can be specified as parameters
-
+	
 	this.gui.add(this.scene, 'speed', -5, 5);
+
+	let subAppearanceController = this.gui.add(this.scene, 'submarineAppearanceList', this.scene.submarineAppearanceList);
+
+	subAppearanceController.onChange(function(value) {
+		self.scene.currSubmarineAppearance = parseInt(value);
+	})
 
 	return true;
 };

@@ -19,6 +19,11 @@ LightingScene.prototype.init = function(application) {
 	this.light0 = false;
 	this.light1 = false;
 	this.light2 = false;
+
+	this.submarineAppearanceList = {"Metal 1" : 0, "Rusty 1" : 1};
+	this.currSubmarineAppearance = 0;
+	this.submarineAppearances = [];
+
 	this.speed = 3;
 
 	this.initCameras();
@@ -43,6 +48,14 @@ LightingScene.prototype.init = function(application) {
 	// Materials
 	this.defaultMaterial = new CGFappearance(this);
 
+	this.metalAppearance1 = new CGFappearance(this);
+	this.metalAppearance1.loadTexture("/resources/images/metal_texture_1.jpg");
+	this.submarineAppearances.push(this.metalAppearance1);
+
+	this.rustyAppearance1 = new CGFappearance(this);
+	this.rustyAppearance1.loadTexture("/resources/images/rusty_texture_1.jpg");
+	this.submarineAppearances.push(this.rustyAppearance1);
+
 	let seaSpecular = 0.5;
 	let seaDiffuse = 1;
 	this.seaMaterial = new CGFappearance(this);
@@ -63,8 +76,6 @@ LightingScene.prototype.init = function(application) {
 
 	this.pushMatrix();
 		this.loadIdentity();
-	//	this.translate(-1, 0, 0);
-	//	this.rotate(Math.PI/2, 0, 1, 0);
 		this.subMatrix = this.getMatrix();
 	this.popMatrix();
 	this.submarine.x = 0;
@@ -148,17 +159,18 @@ LightingScene.prototype.display = function() {
 
 	// Submarine
 	this.pushMatrix();
+		this.submarineAppearances[this.currSubmarineAppearance].apply();
 		this.multMatrix(this.subMatrix);
 		this.submarine.display();
 	this.popMatrix();
 
-	// Sea - DISABLED FOR SUB BUILDING
-/*	this.pushMatrix();
+	// Sea
+	this.pushMatrix();
 		this.seaMaterial.apply();
 		this.rotate(-Math.PI/2, 1, 0, 0);
 		this.scale(60, 60, 60);
 		this.sea.display();
-	this.popMatrix(); */
+	this.popMatrix();
 
 	// Clock
 	this.pushMatrix();
@@ -166,9 +178,6 @@ LightingScene.prototype.display = function() {
 		this.translate(8, 5, 0);
 		this.clock.display();
 	this.popMatrix();
-
-
-
 
 	// Post
 	this.pushMatrix();
