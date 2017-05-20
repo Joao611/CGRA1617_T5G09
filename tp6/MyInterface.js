@@ -98,22 +98,29 @@ MyInterface.prototype.processKeyboard = function(event) {
 	switch (String.fromCharCode(event.keyCode || event.which).toUpperCase())
 	{
 		case ('W'):
+<<<<<<< HEAD
 			this.scene.moveSubmarine(1);
 			break;
 		case ('S'):
 			this.scene.moveSubmarine(-1);
+=======
+			this.scene.moveSubmarine(true);
+			break;
+		case ('S'):
+			this.scene.moveSubmarine(false);
+>>>>>>> e7387de331c754eeb312b7e1417eb1f0339108b0
 			break;
 		case ('A'):
-			this.scene.rotateSubmarine(1);
+			this.scene.rotateSubmarine(true);
 			break;
 		case ('D'):
-			this.scene.rotateSubmarine(-1);
+			this.scene.rotateSubmarine(false);
 			break;
 		case ('Q'):
-			this.scene.rotateSubmarine_up(1);
+			this.scene.rotateSubmarine_up(true);
 			break;
 		case ('E'):
-			this.scene.rotateSubmarine_up(-1);
+			this.scene.rotateSubmarine_up(false);
 			break;
 			case ('P'):
 				this.scene.periscope_up(1);
