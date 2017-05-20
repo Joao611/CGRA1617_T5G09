@@ -45,12 +45,9 @@ LightingScene.prototype.init = function(application) {
 	this.post = new MyCylinder(this, 12, 1);
 	
 	this.targets = [];
+	this.initTargets();
 
-	let target1 = new MyTarget(this, 6, 0, 0);
-	this.targets.push(target1);
-
-	let target2 = new MyTarget(this, 0, 0, 6);
-	this.targets.push(target2);
+	this.testTorpedo = new MyTorpedo(this, 2, 2, 2, [1,0,0]);
 
 	// Materials
 	this.defaultMaterial = new CGFappearance(this);
@@ -90,6 +87,14 @@ LightingScene.prototype.init = function(application) {
 	this.submarine.z = 0;
 	this.submarine.xyOrientation = 0;
 	this.submarine.xzOrientation = 0;
+}
+
+LightingScene.prototype.initTargets = function() {
+	let target1 = new MyTarget(this, 6, 0, 0);
+	this.targets.push(target1);
+
+	let target2 = new MyTarget(this, 0, 0, 6);
+	this.targets.push(target2);
 }
 
 LightingScene.prototype.initCameras = function() {
@@ -165,7 +170,7 @@ LightingScene.prototype.display = function() {
 	// ---- BEGIN Primitive drawing section
 
 	// Submarine
-	this.pushMatrix();
+	/*this.pushMatrix();
 		this.submarineAppearances[this.currSubmarineAppearance].apply();
 		this.multMatrix(this.subMatrix);
 		this.submarine.display();
@@ -198,7 +203,10 @@ LightingScene.prototype.display = function() {
 	// Targets
 	for (i = 0; i < this.targets.length; i++) {
 		this.targets[i].display();
-	}
+	}*/
+
+	// Test Torpedo
+	this.testTorpedo.display();
 
 	// ---- END Primitive drawing section
 };
