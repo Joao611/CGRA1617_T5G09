@@ -194,11 +194,11 @@ LightingScene.prototype.display = function() {
 LightingScene.prototype.update = function(currTime) {
 	this.clock.update(currTime);
 	this.submarine.update(currTime);
-	let pos_vec = vec3.fromValues(this.submarine.update_vec[0]-10, this.submarine.update_vec[1]+3, this.submarine.update_vec[2]);
+	/*let pos_vec = vec3.fromValues(this.submarine.update_vec[0]-10, this.submarine.update_vec[1]+3, this.submarine.update_vec[2]);
 	this.camera.setPosition(pos_vec);
 
 	let tar_vec = vec4.fromValues(this.submarine.update_vec[0]+1, this.submarine.update_vec[1], this.submarine.update_vec[2],1);
-	this.camera.setTarget(tar_vec);
+	this.camera.setTarget(tar_vec); */
 };
 
 LightingScene.prototype.Clock = function() {
@@ -234,9 +234,9 @@ LightingScene.prototype.moveSubmarine = function(forward) {
 	*/
 
 	if (forward) {
-		this.submarine.vel_vec[0] += subMovement;
+		this.submarine.vel_vec[0] += forward;
 	} else {
-		this.submarine.vel_vec[0] -= subMovement;
+		this.submarine.vel_vec[0] -= forward;
 	}
 }
 

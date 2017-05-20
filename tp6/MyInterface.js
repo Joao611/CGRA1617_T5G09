@@ -106,16 +106,16 @@ MyInterface.prototype.processKeyboard = function(event) {
 
 			break;
 		case ('A'):
-			this.scene.rotateSubmarine(true);
+			this.scene.rotateSubmarine(1);
 			break;
 		case ('D'):
-			this.scene.rotateSubmarine(false);
+			this.scene.rotateSubmarine(-1);
 			break;
 		case ('Q'):
-			this.scene.rotateSubmarine_up(true);
+			this.scene.rotateSubmarine_up(1);
 			break;
 		case ('E'):
-			this.scene.rotateSubmarine_up(false);
+			this.scene.rotateSubmarine_up(-1);
 			break;
 			case ('P'):
 				this.scene.periscope_up(1);
