@@ -29,15 +29,15 @@ MyTable.prototype.displayLegs = function() {
 	// Back right.
 	this.scene.translate(4.7, 0, 0);
 	this.displayLeg();
-	
+
  	// Front right.
  	this.scene.translate(0, 0, 2.7);
  	this.displayLeg();
-	
+
  	// Back right.
  	this.scene.translate(-4.7, 0, 0);
  	this.displayLeg();
-	
+
 	this.scene.popMatrix();
 }
 
