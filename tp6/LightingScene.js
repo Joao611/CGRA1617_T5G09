@@ -206,7 +206,7 @@ LightingScene.prototype.display = function() {
 	}
 
 	// Torpedoes
-	for (torpedo in this.torpedoes) {
+	for (torpedo of this.torpedoes) {
 		torpedo.display();
 	}
 	
@@ -217,6 +217,16 @@ LightingScene.prototype.display = function() {
 LightingScene.prototype.update = function(currTime) {
 	this.clock.update(currTime);
 	this.submarine.update(currTime);
+
+	for (i = 0; i < this.torpedoes.length; i++) {		
+		if (this.torpedoes[i].collidedWithTarget(this.torpedoes[i].target)) {
+			this.torpedoes.splice(i, 1);
+			let targetInd = this.targets.indexOf(this.targets[i]);
+			this.targets.splice(targetInd, 1);
+		} else {
+			this.torpedoes[i].update(currTime);
+		}
+	}
 };
 
 LightingScene.prototype.Clock = function() {
@@ -290,6 +300,10 @@ LightingScene.prototype.rotateSubmarine_up = function(up){
 }
 
 LightingScene.prototype.launchTorpedo = function() {
-	let torpedo = new MyTorpedo(scene);
+	let torpX = this.submarine.x;
+	let torpY = this.submarine.y - CYLINDER_HEIGHT;
+	let torpZ = this.submarine.z;
+	let torpedo = new MyTorpedo(this, torpX, torpY, torpZ, this.submarine.vel_vec);
+	torpedo.lockTarget(this.targets[0]);
 	this.torpedoes.push(torpedo);
 }

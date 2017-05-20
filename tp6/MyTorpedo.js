@@ -29,6 +29,9 @@ function MyTorpedo(scene, x, y, z, orientation) {
 
 	this.rudder = new MyTrapeze(scene);
 	this.elevator = new MyTrapeze(scene);
+
+	this.startTime = -1;
+	this.unitsPerSec = 1;
 }
 
 MyTorpedo.prototype = Object.create(CGFobject.prototype);
@@ -82,6 +85,9 @@ MyTorpedo.prototype.display = function() {
     this.scene.popMatrix();
 }
 
+
+
+
 function getRotAng(newOrientation, originalOrientation) {
     let delta = sub_vecs(newOrientation, originalOrientation);
 
@@ -92,4 +98,60 @@ function getRotAng(newOrientation, originalOrientation) {
 	}
     let ang = Math.asin(opposingLeg / hypotenuse);
     return ang;
+}
+
+// Torpedo must have a target set.
+MyTorpedo.prototype._initTrajectory = function() {
+	this.totalDistance = Math.sqrt(Math.pow(this.target.x - this.x, 2)
+								+ Math.pow(this.target.y - this.y, 2)
+								+ Math.pow(this.target.z - this.z, 2));
+	let normalizedOrientation = normalize(this.orientation);
+	this.P1 = [this.x, this.y, this.z];
+	this.P2 = [this.target.x + 6*normalizedOrientation[0],
+				this.target.y + 6*normalizedOrientation[1],
+				this.target.z + 6*normalizedOrientation[2]];
+	this.P3 = [this.target.x, this.target.y + 3, this.target.z];
+	this.P4 = [this.target.x, this.target.y, this.target.z];
+}
+
+MyTorpedo.prototype._getPathTime = function(currTime) {
+	if (this.startTime == -1) {
+		this.startTime = currTime;
+		return 0;
+	}
+	let milliT = (currTime - this.startTime) % (this.totalDistance / this.unitsPerSec * 1000);
+	return milliT / 1000;
+}
+
+MyTorpedo.prototype._updateLocation = function(t) {
+	let newPoint = [];
+	for (i = 0; i < 3; i++) {
+		let firstTerm = Math.pow(1-t, 3) * this.P1[i];
+		let secondTerm = 3 * t * Math.pow(1-t, 2) * this.P2[i];
+		let thirdTerm = 3 * t * t * (1-t) * this.P3[i];
+		let fourthTerm = t * t * t * this.P4[i];
+		newPoint[i] = firstTerm + secondTerm + thirdTerm + fourthTerm;
+	}
+
+	this.x = newPoint[0];
+	this.y = newPoint[1];
+	this.z = newPoint[2];
+}
+
+MyTorpedo.prototype.lockTarget = function(target) {
+	this.target = target;
+	this._initTrajectory();
+}
+
+
+MyTorpedo.prototype.update = function(currTime) {
+	let t = this._getPathTime(currTime);
+	this._updateLocation(t);
+}
+
+MyTorpedo.prototype.collidedWithTarget = function(target) {
+	let delta = Math.pow(10, 0);
+	return (Math.abs(this.x - target.x) < delta
+			&& Math.abs(this.y - target.x) < delta
+			&& Math.abs(this.z - target.z) < delta);
 }
