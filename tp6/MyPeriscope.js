@@ -14,7 +14,9 @@ MyPeriscope.prototype.constructor = MyPeriscope;
 
 MyPeriscope.prototype.display = function() {
     this.scene.pushMatrix();
-    	this.scene.scale(PERISCOPE_DIAMETER/2, this.periscopeHeight, PERISCOPE_DIAMETER/2);
+		this.scene.translate(0, -this.periscopeHeight, 0);
+    	this.scene.scale(PERISCOPE_DIAMETER/2, this.periscopeHeight*2, PERISCOPE_DIAMETER/2);
+
     	this.scene.rotate(-Math.PI/2, 1, 0, 0);
         this.tallCylinder.display();
     this.scene.popMatrix();

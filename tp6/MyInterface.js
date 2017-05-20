@@ -71,7 +71,7 @@ MyInterface.prototype.init = function(application) {
 	// must be a numeric variable of the scene, initialized in scene.init e.g.
 	// this.speed=3;
 	// min and max values can be specified as parameters
-	
+
 	this.gui.add(this.scene, 'speed', -5, 5);
 
 	let subAppearanceController = this.gui.add(this.scene, 'submarineAppearanceList', this.scene.submarineAppearanceList);
@@ -98,10 +98,10 @@ MyInterface.prototype.processKeyboard = function(event) {
 	switch (String.fromCharCode(event.keyCode || event.which).toUpperCase())
 	{
 		case ('W'):
-			this.scene.moveSubmarine(-1);
+			this.scene.moveSubmarine(1);
 			break;
 		case ('S'):
-			this.scene.moveSubmarine(1);
+			this.scene.moveSubmarine(-1);
 			break;
 		case ('A'):
 			this.scene.rotateSubmarine(1);
@@ -115,5 +115,11 @@ MyInterface.prototype.processKeyboard = function(event) {
 		case ('E'):
 			this.scene.rotateSubmarine_up(-1);
 			break;
+			case ('P'):
+				this.scene.periscope_up(1);
+				break;
+			case ('L'):
+				this.scene.periscope_up(-1);
+				break;
 	};
 };

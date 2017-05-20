@@ -18,106 +18,133 @@ let VEL_CONST = 1000000;
 let CYLINDER_HEIGHT = 1;
 let TOWER_WIDTH = 0.55;
 let PERISCOPE_HEIGHT = TOWER_HEIGHT;
-let TOWER_ELEVATOR_WIDTH = TOWER_LENGTH/3;
+let TOWER_ELEVATOR_WIDTH = TOWER_LENGTH / 3;
 
 
 
-function sub_vecs(vec1, vec2 ){
+function sub_vecs(vec1, vec2) {
 
-	var res = [0,0,0];
+    var res = [0, 0, 0];
 
-	for (var i = 0; i < 3; i++) {
-		res[i] = vec1[i] - vec2[i];
-	}
-	return res;
+    for (var i = 0; i < 3; i++) {
+        res[i] = vec1[i] - vec2[i];
+    }
+    return res;
 }
 
-function normalize(vec1){
+function normalize(vec1) {
 
-	var res = [0,0,0];
-	let length = Math.sqrt( vec1[0]* vec1[0] + vec1[1]*vec1[1] + vec1[2]*vec1[2]);
-	if(length == 0)
-		return vec1;
+    var res = [0, 0, 0];
+    let length = Math.sqrt(vec1[0] * vec1[0] + vec1[1] * vec1[1] + vec1[2] * vec1[2]);
+    if (length == 0)
+        return vec1;
 
-	for (var i = 0; i < 3; i++) {
-		res[i] = vec1[i]/length;
-	}
-	return res;
+    for (var i = 0; i < 3; i++) {
+        res[i] = vec1[i] / length;
+    }
+    return res;
 }
 
 function m_multiply(a, b) {
-  var aNumRows = a.length;
-	var aNumCols = a[0].length;
-  var bNumRows = b.length;
-	var bNumCols = b[0].length;
-	var m = new Array(aNumRows);  // initialize array of rows
+    var aNumRows = a.length;
+    var aNumCols = a[0].length;
+    var bNumRows = b.length;
+    var bNumCols = b[0].length;
+    var m = new Array(aNumRows); // initialize array of rows
 
-  for (var r = 0; r < aNumRows; ++r) {
-    m[r] = new Array(bNumCols); // initialize the current row
-    for (var c = 0; c < bNumCols; ++c) {
-      m[r][c] = 0;             // initialize the current cell
-      for (var i = 0; i < aNumCols; ++i) {
-        m[r][c] += a[r][i] * b[i][c];
-      }
+    for (var r = 0; r < aNumRows; ++r) {
+        m[r] = new Array(bNumCols); // initialize the current row
+        for (var c = 0; c < bNumCols; ++c) {
+            m[r][c] = 0; // initialize the current cell
+            for (var i = 0; i < aNumCols; ++i) {
+                m[r][c] += a[r][i] * b[i][c];
+            }
+        }
     }
-  }
-  return m;
+    return m;
 }
 
-function scal_mul(mat, k){
-	var res = mat;
-	for(var i = 0; i < 3; i++){
-		for(var k = 0; k < 3; k++){
-			res[i][k] *= k;
-	}
-}
-	return res;
+function scal_mul(mat, k) {
+    var res = mat;
+    for (var i = 0; i < 3; i++) {
+        for (var k = 0; k < 3; k++) {
+            res[i][k] *= k;
+        }
+    }
+    return res;
 }
 
-function dot_prod(vec1, vec2){
-		return (vec1[0]*vec2[0] + vec1[1]*vec2[1]+ vec1[2]*vec2[2]);
+function dot_prod(vec1, vec2) {
+    return (vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2]);
 }
 
 function crossProduct(a, b) {
 
-  // Check lengths
-  if (a.length != 3 || b.length != 3) {
-     return;
-  }
+    // Check lengths
+    if (a.length != 3 || b.length != 3) {
+        return;
+    }
 
-  return [a[1]*b[2] - a[2]*b[1],
-          a[2]*b[0] - a[0]*b[2],
-          a[0]*b[1] - a[1]*b[0]];
+    return [a[1] * b[2] - a[2] * b[1],
+        a[2] * b[0] - a[0] * b[2],
+        a[0] * b[1] - a[1] * b[0]
+    ];
 
 }
 
-function vec_norm(vec){
+function vec_norm(vec) {
 
-	return Math.sqrt(vec[0]*vec[0] + vec[1]*vec[1] +vec[2]*vec[2]  );
+    return Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
 }
 
-function skew_mat(vec3){
+function skew_mat(vec3) {
 
-	return [
-		[0, -vec3[2], vec3[1]],
-		[vec3[2], 0, -vec3[1]],
-		[-vec3[1], vec3[0], 0,]
-	];
+    return [
+        [0, -vec3[2], vec3[1]],
+        [vec3[2], 0, -vec3[1]],
+        [-vec3[1], vec3[0], 0, ]
+    ];
 }
 
-function add_matrix(mat1, mat2){
-	var res = [
-		[0,0,0],
-		[0,0,0],
-		[0,0,0]
-	];
-	for(var i = 0; i < 3 ; i++){
-		for(var k = 0; k < 3 ; k++){
-			res[i][k] = mat1[i][k] +  mat2[i][k];
-	}
+function add_matrix(mat1, mat2) {
+    var res = [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]
+    ];
+    for (var i = 0; i < 3; i++) {
+        for (var k = 0; k < 3; k++) {
+            res[i][k] = mat1[i][k] + mat2[i][k];
+        }
+    }
+    return res;
 }
-return res;
+
+function rotate_vect(vec, angle, axis) {
+
+    var res = [0, 0, 0];
+    if (axis == 'x' || axis == 'X') {
+
+        res[0] = vec[0];
+        res[1] = vec[1] * Math.cos(angle) - vec[2] * Math.sin(angle);
+        res[2] = vec[1] * Math.sin(angle) + vec[2] * Math.cos(angle);
+        return res;
+    }
+
+    if (axis == 'y' || axis == 'Y') {
+
+        res[0] = vec[0] * Math.cos(angle) + vec[2] * Math.sin(angle);
+        res[1] = vec[1];
+        res[2] = -vec[0] * Math.sin(angle) + vec[2] * Math.cos(angle);
+        return res;
+    }
+
+    res[0] = vec[0] * Math.cos(angle) - vec[1] * Math.sin(angle);
+    res[1] = vec[0] * Math.sin(angle) + vec[1] * Math.cos(angle);
+    res[2] = vec[2];
+    return res;
 }
+
 /*
 function compute_orientation(ori_vec, vel_vec){
 	 let v = vec3.create() //crossProduct(ori_vec, vel_vec);
@@ -136,37 +163,42 @@ function compute_orientation(ori_vec, vel_vec){
 
 
 function MySubmarine(scene) {
-	CGFobject.call(this,scene);
+    CGFobject.call(this, scene);
 
-	this.x = 0;
-	this.y = 0;
-	this.z = 0;
-	this.xzOrientation = 90; // degrees
-	this.xyOrientation = 0; // degrees //TODO
+    this.x = 0;
+    this.y = 0;
+    this.z = 0;
+    this.xzOrientation = 90; // degrees
+    this.xyOrientation = 0; // degrees //TODO
 
-	this.vel_vec = [-1,0,0];
-	this.update_vec = [0,0,0];
-	this.update_vec_r = [0,0,0];
-	this.init_ori = [-1,0,0];
+    this.vel_vec = [-1, 0, 0];
+    this.update_vec = [0, 0, 0];
+    this.update_vec_r = [0, 0, 0];
+    this.init_ori = [-1, 0, 0];
 
-	this.rot_matrix;
+    this.rot_matrix;
 
-	this.oldtime = 0;
-	this.time = 0;
+    this.oldtime = 0;
+    this.time = 0;
 
-	this.frontSphere = new MyLamp(scene, 12, 8);
-	this.mainCylinder = new MyCylinder(scene, 12, 8);
-	this.rearSphere = new MyLamp(scene, 12, 8);
+		this.peris_height = 0;
 
-	this.towerSide = new MyCylinder(scene, 12, 8);
-	this.towerTop = new MyCircle(scene, 12);
-	this.periscope = new MyPeriscope(scene, 12, 8, PERISCOPE_HEIGHT);
+		this.rudder_r = 0;
+		this.elevator_r = 0;
 
-	this.propeller = new MyPropeller(scene, 12, 8);
+    this.frontSphere = new MyLamp(scene, 12, 8);
+    this.mainCylinder = new MyCylinder(scene, 12, 8);
+    this.rearSphere = new MyLamp(scene, 12, 8);
 
-	this.towerElevator = new MyTrapeze(scene);
-	this.rearElevator = new MyTrapeze(scene);
-	this.rudder = new MyTrapeze(scene);
+    this.towerSide = new MyCylinder(scene, 12, 8);
+    this.towerTop = new MyCircle(scene, 12);
+    this.periscope = new MyPeriscope(scene, 12, 8, PERISCOPE_HEIGHT);
+
+    this.propeller = new MyPropeller(scene, 12, 8);
+
+    this.towerElevator = new MyTrapeze(scene);
+    this.rearElevator = new MyTrapeze(scene);
+    this.rudder = new MyTrapeze(scene);
 };
 
 MySubmarine.prototype = Object.create(CGFobject.prototype);
@@ -174,123 +206,170 @@ MySubmarine.prototype.constructor = MySubmarine;
 
 MySubmarine.prototype.display = function() {
 
-	this.scene.pushMatrix();
-		//	this.scene.translate((CYLINDER_LENGTH/2) - PROP_OFFSET_LENGTH,0,0);
+		var old_pos = this.update_vec.slice(0);
 
-	//		this.scene.translate(-(CYLINDER_LENGTH/2) - PROP_OFFSET_LENGTH,0,0);
-//				this.scene.multMatrix(this.rot_matrix);
-			//this.scene.translate(this.update_vec[0], this.update_vec[1], this.update_vec[2])
-			this.scene.rotate(this.update_vec_r[0], 1 ,0,0);
-			this.scene.rotate(this.update_vec_r[1], 0,1, 0);
-			this.scene.rotate(this.update_vec_r[2], 0, 0, 1);
-			this.scene.translate(this.update_vec[0], this.update_vec[1], this.update_vec[2])
+    this.scene.pushMatrix();
+    //	this.scene.translate((CYLINDER_LENGTH/2) - PROP_OFFSET_LENGTH,0,0);
 
- 	this.scene.pushMatrix();
- 		this.scene.translate(-CYLINDER_LENGTH/2, 0, 0);
- 		this.scene.scale(SEMISPHERE_LENGTH, CYLINDER_HEIGHT/2, CYLINDER_WIDTH/2);
- 		this.scene.rotate(-Math.PI/2, 0, 1, 0);
- 		this.rearSphere.display();
- 	this.scene.popMatrix();
+    //		this.scene.translate(-(CYLINDER_LENGTH/2) - PROP_OFFSET_LENGTH,0,0);
+    //				this.scene.multMatrix(this.rot_matrix);
+    //this.scene.translate(-this.update_vec[0], -this.update_vec[1], -this.update_vec[2]);
+    //	this.scene.rotate(this.update_vec_r[0], 1 ,0,0);
+    //	this.scene.rotate(this.update_vec_r[1], 0,1, 0);
+    //	this.scene.rotate(this.update_vec_r[2], 0, 0, 1);
+//		this.scene.translate(old_pos[0], old_pos[1], old_pos[2]);
 
-  	this.scene.pushMatrix();
-  		this.scene.translate(-CYLINDER_LENGTH/2, 0, 0);
-  		this.scene.scale(CYLINDER_LENGTH, CYLINDER_HEIGHT/2, CYLINDER_WIDTH/2);
- 		this.scene.rotate(Math.PI/2, 0, 1, 0);
-  		this.mainCylinder.display();
-  	this.scene.popMatrix();
+	//	this.scene.translate(-old_pos[0], -old_pos[1], -old_pos[2]);
 
-  	this.scene.pushMatrix();
-  		this.scene.translate(CYLINDER_LENGTH/2, 0, 0);
- 		this.scene.scale(SEMISPHERE_LENGTH, CYLINDER_HEIGHT/2, CYLINDER_WIDTH/2);
-  		this.scene.rotate(Math.PI/2, 0, 1, 0);
-  		this.frontSphere.display();
-   	this.scene.popMatrix();
+	//this.update_vec_r = normalize(this.update_vec_r);
+	let vec_length = vec_norm(this.update_vec);
+	this.scene.rotate(this.update_vec_r[0]/vec_length, 1, 0, 0);
+	this.scene.rotate(this.update_vec_r[1]/vec_length, 0, 1, 0);
+	this.scene.rotate(this.update_vec_r[2]/vec_length, 0, 0, 1);
 
- 	this.scene.pushMatrix();
- 		this.scene.scale(TOWER_LENGTH/2, CYLINDER_HEIGHT/2 + TOWER_HEIGHT, TOWER_WIDTH/2);
- 		this.scene.rotate(-Math.PI/2, 1, 0, 0);
- 		this.towerSide.display();
- 	this.scene.popMatrix();
+this.scene.translate(this.update_vec[0], this.update_vec[1], this.update_vec[2]);
+	/*	this.scene.translate(
+				rotate_vect(this.update_vec, this.update_vec_r[0]*Math.PI*2, 'x')[0],
+				rotate_vect(this.update_vec, this.update_vec_r[1]*Math.PI*2, 'y')[1],
+				rotate_vect(this.update_vec, this.update_vec_r[2]*Math.PI*2, 'z')[2]); */
 
- 	this.scene.pushMatrix();
- 		this.scene.translate(0, CYLINDER_HEIGHT/2 + TOWER_HEIGHT, 0);
- 		this.scene.scale(TOWER_LENGTH/2, 1, TOWER_WIDTH/2);
- 		this.scene.rotate(-Math.PI/2, 1, 0, 0);
- 		this.towerTop.display();
- 	this.scene.popMatrix();
-
- 	this.scene.pushMatrix();
- 		this.scene.translate(0, CYLINDER_HEIGHT, 0);
- 		this.scene.rotate(Math.PI/2, 0, 1, 0);
-  		this.periscope.display();
-  	this.scene.popMatrix();
-
-	this.scene.pushMatrix();
-		this.scene.translate(-CYLINDER_LENGTH/2, -CYLINDER_HEIGHT/4, -CYLINDER_WIDTH/2 - PROP_DIAMETER/2);
-		this.scene.rotate(Math.PI/2, 0, 1, 0);
-		this.scene.scale(PROP_DIAMETER/2, PROP_DIAMETER/2,  PROP_LENGTH);
-		this.propeller.display();
-	this.scene.popMatrix();
-
-	this.scene.pushMatrix();
-		this.scene.translate(-CYLINDER_LENGTH/2, -CYLINDER_HEIGHT/4, CYLINDER_WIDTH/2 + PROP_DIAMETER/2);
-		this.scene.rotate(Math.PI/2, 0, 1, 0);
-		this.scene.scale(PROP_DIAMETER/2, PROP_DIAMETER/2,  PROP_LENGTH);
-		this.propeller.display();
-	this.scene.popMatrix();
-
-	// Tower Elevator
-	// 0.5 = trapezoid width
-	this.scene.pushMatrix();
-		this.scene.translate(0, CYLINDER_HEIGHT/2 + TOWER_HEIGHT/2, 0);
-		this.scene.scale(TOWER_ELEVATOR_WIDTH/0.5, 1, TOWER_ELEVATOR_BIG_LENGTH/2.34);
-		this.scene.rotate(-Math.PI/2, 0, 0, 1);
-		this.scene.rotate(Math.PI/2, 1, 0, 0);
-		this.towerElevator.display();
-	this.scene.popMatrix();
+			//	this.scene.rotate(this.update_vec_r[0], 1, 0, 0);
+			//	this.scene.rotate(this.update_vec_r[1], 0, 1, 0);
+			//	this.scene.rotate(this.update_vec_r[2], 0, 0, 1);
 
 
-	// Rudder
-	// 2.34 = trapezoid height
-	this.scene.pushMatrix();
-		this.scene.translate(-CYLINDER_LENGTH/2, 0, 0);
-		this.scene.scale(-1, RUDDER_BIG_HEIGHT/2.34, -1);
-		this.scene.rotate(Math.PI/2, 0, 1, 0);
-		this.rudder.display();
-	this.scene.popMatrix();
 
-	// Rear Elevator
-	this.scene.pushMatrix();
-		this.scene.translate(-CYLINDER_LENGTH/2, 0, 0);
-		this.scene.scale(1, 1, RUDDER_BIG_HEIGHT/2.34);
-		this.scene.rotate(-Math.PI/2, 0, 0, 1);
-		this.scene.rotate(Math.PI/2, 1, 0, 0);
-		this.rearElevator.display();
-	this.scene.popMatrix();
-	this.scene.popMatrix();
+
+//
+
+    this.scene.pushMatrix();
+    this.scene.translate(-CYLINDER_LENGTH / 2, 0, 0);
+    this.scene.scale(SEMISPHERE_LENGTH, CYLINDER_HEIGHT / 2, CYLINDER_WIDTH / 2);
+    this.scene.rotate(-Math.PI / 2, 0, 1, 0);
+    this.rearSphere.display();
+    this.scene.popMatrix();
+
+    this.scene.pushMatrix();
+    this.scene.translate(-CYLINDER_LENGTH / 2, 0, 0);
+    this.scene.scale(CYLINDER_LENGTH, CYLINDER_HEIGHT / 2, CYLINDER_WIDTH / 2);
+    this.scene.rotate(Math.PI / 2, 0, 1, 0);
+    this.mainCylinder.display();
+    this.scene.popMatrix();
+
+    this.scene.pushMatrix();
+    this.scene.translate(CYLINDER_LENGTH / 2, 0, 0);
+    this.scene.scale(SEMISPHERE_LENGTH, CYLINDER_HEIGHT / 2, CYLINDER_WIDTH / 2);
+    this.scene.rotate(Math.PI / 2, 0, 1, 0);
+    this.frontSphere.display();
+    this.scene.popMatrix();
+
+    this.scene.pushMatrix();
+    this.scene.scale(TOWER_LENGTH / 2, CYLINDER_HEIGHT / 2 + TOWER_HEIGHT, TOWER_WIDTH / 2);
+    this.scene.rotate(-Math.PI / 2, 1, 0, 0);
+    this.towerSide.display();
+    this.scene.popMatrix();
+
+    this.scene.pushMatrix();
+    this.scene.translate(0, CYLINDER_HEIGHT / 2 + TOWER_HEIGHT, 0);
+    this.scene.scale(TOWER_LENGTH / 2, 1, TOWER_WIDTH / 2);
+    this.scene.rotate(-Math.PI / 2, 1, 0, 0);
+    this.towerTop.display();
+    this.scene.popMatrix();
+
+    this.scene.pushMatrix();
+
+		if(this.peris_height > 0.57)
+			this.peris_height = 0.57;
+		else if(this.peris_height < 0)
+			this.peris_height = 0.0;
+
+		this.scene.translate(0, this.peris_height, 0);
+    this.scene.translate(0, CYLINDER_HEIGHT, 0);
+    this.scene.rotate(Math.PI / 2, 0, 1, 0);
+    this.periscope.display();
+    this.scene.popMatrix();
+
+    this.scene.pushMatrix();
+    this.scene.translate(-CYLINDER_LENGTH / 2, -CYLINDER_HEIGHT / 4, -CYLINDER_WIDTH / 2 - PROP_DIAMETER / 2);
+    this.scene.rotate(Math.PI / 2, 0, 1, 0);
+    this.scene.scale(PROP_DIAMETER / 2, PROP_DIAMETER / 2, PROP_LENGTH);
+    this.propeller.display();
+    this.scene.popMatrix();
+
+    this.scene.pushMatrix();
+    this.scene.translate(-CYLINDER_LENGTH / 2, -CYLINDER_HEIGHT / 4, CYLINDER_WIDTH / 2 + PROP_DIAMETER / 2);
+    this.scene.rotate(Math.PI / 2, 0, 1, 0);
+    this.scene.scale(PROP_DIAMETER / 2, PROP_DIAMETER / 2, PROP_LENGTH);
+    this.propeller.display();
+    this.scene.popMatrix();
+
+    // Tower Elevator
+    // 0.5 = trapezoid width
+    this.scene.pushMatrix();
+    this.scene.translate(0, CYLINDER_HEIGHT / 2 + TOWER_HEIGHT / 2, 0);
+    this.scene.scale(TOWER_ELEVATOR_WIDTH / 0.5, 1, TOWER_ELEVATOR_BIG_LENGTH / 2.34);
+    this.scene.rotate(-Math.PI / 2, 0, 0, 1);
+    this.scene.rotate(Math.PI / 2, 1, 0, 0);
+    this.towerElevator.display();
+    this.scene.popMatrix();
+
+
+    // Rudder
+    // 2.34 = trapezoid height
+    this.scene.pushMatrix();
+    this.scene.translate(-CYLINDER_LENGTH / 2, 0, 0);
+		this.scene.rotate(this.elevator_r*Math.PI/6, 0, 1,0);
+    this.scene.scale(-1, RUDDER_BIG_HEIGHT / 2.34, -1);
+    this.scene.rotate(Math.PI / 2, 0, 1, 0);
+    this.rudder.display();
+    this.scene.popMatrix();
+
+    // Rear Elevator
+
+    this.scene.pushMatrix();
+    this.scene.translate(-CYLINDER_LENGTH / 2, 0, 0);
+		this.scene.rotate(this.rudder_r*Math.PI/6, 0,0,1);
+    this.scene.scale(1, 1, RUDDER_BIG_HEIGHT / 2.34);
+    this.scene.rotate(-Math.PI / 2, 0, 0, 1);
+    this.scene.rotate(Math.PI / 2, 1, 0, 0);
+    this.rearElevator.display();
+    this.scene.popMatrix();
+
+
+
+
+
+    this.scene.popMatrix();
 }
 
 MySubmarine.prototype.update = function(currTime) {
 
-			if(this.oldtime == 0){
-				this.oldtime = currTime;
-				return;
-			}
+    if (this.oldtime == 0) {
+        this.oldtime = currTime;
+        return;
+    }
 
-			this.time = (currTime - this.oldtime);
+    this.time = (currTime - this.oldtime);
 
-			//this.update_vec = [-0.0000000000000000000001, 0 ,0];//this.vel_vec * this.time/1000;
-			this.update_vec[0] += this.vel_vec[0] * this.time/VEL_CONST ;
-			this.update_vec[1] += this.vel_vec[1] * this.time/VEL_CONST ;
-			this.update_vec[2] += this.vel_vec[2] * this.time/VEL_CONST ;
+    //this.update_vec = [-0.0000000000000000000001, 0 ,0];//this.vel_vec * this.time/1000;
+    this.update_vec[0] += this.vel_vec[0] * this.time / VEL_CONST;
+    this.update_vec[1] += this.vel_vec[1] * this.time / VEL_CONST;
+    this.update_vec[2] += this.vel_vec[2] * this.time / VEL_CONST;
 
-			//this.rot_matrix = compute_orientation(this.init_ori, this.vel_vec);
+		if(this.propeller.angle > 1.0)
+			this.propeller.angle = 0;
+		else
+			this.propeller.angle = ((this.time%1000)/1000)*vec_norm(this.vel_vec);
 
-			//this.update_vec_r[0] = normalize(sub_vecs( this.init_ori , this.vel_vec ))[0]*Math.PI/2;
-			//this.update_vec_r[1] = normalize(sub_vecs( this.init_ori ,this.vel_vec) )[1]*Math.PI/2;
-			//this.update_vec_r[2] = normalize(sub_vecs(this.init_ori , this.vel_vec) )[2]*Math.PI/2;
+			this.rudder_r *= 0.95;
+			this.elevator_r *= 0.95;
+    //this.rot_matrix = compute_orientation(this.init_ori, this.vel_vec);
 
-		//	alert(sub_vecs( normalize(this.update_vec_r) , normalize(this.vel_vec) ));
+    //this.update_vec_r[0] = normalize(sub_vecs( this.init_ori , this.vel_vec ))[0]*Math.PI/2;
+    //this.update_vec_r[1] = normalize(sub_vecs( this.init_ori ,this.vel_vec) )[1]*Math.PI/2;
+    //this.update_vec_r[2] = normalize(sub_vecs(this.init_ori , this.vel_vec) )[2]*Math.PI/2;
 
-			//this.display();
+    //	alert(sub_vecs( normalize(this.update_vec_r) , normalize(this.vel_vec) ));
+
+    //this.display();
 }
