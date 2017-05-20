@@ -43,7 +43,11 @@ LightingScene.prototype.init = function(application) {
 	this.sea = new MyQuad(this, 0, 15, 0, 15);
 	this.clock = new MyClock(this);
 	this.post = new MyCylinder(this, 12, 1);
+	
+	this.targets = [];
+	this.initTargets();
 
+	this.torpedoes = [];
 
 	// Materials
 	this.defaultMaterial = new CGFappearance(this);
@@ -72,7 +76,7 @@ LightingScene.prototype.init = function(application) {
  	this.clockHandsAppearance.setSpecular(0,0,0,1);
  	this.clockHandsAppearance.setDiffuse(0,0,0,1);
 
-	this.setUpdatePeriod(16.667);
+	this.setUpdatePeriod(1/60*1000);
 
 	this.pushMatrix();
 		this.loadIdentity();
@@ -83,6 +87,14 @@ LightingScene.prototype.init = function(application) {
 	this.submarine.z = 0;
 	this.submarine.xyOrientation = 0;
 	this.submarine.xzOrientation = 0;
+}
+
+LightingScene.prototype.initTargets = function() {
+	let target1 = new MyTarget(this, 6, 0, 0);
+	this.targets.push(target1);
+
+	let target2 = new MyTarget(this, 0, 0, 6);
+	this.targets.push(target2);
 }
 
 LightingScene.prototype.initCameras = function() {
@@ -188,17 +200,39 @@ LightingScene.prototype.display = function() {
 		this.post.display();
 	this.popMatrix();
 
+	// Targets
+	for (i = 0; i < this.targets.length; i++) {
+		this.targets[i].display();
+	}
+
+	// Torpedoes
+	for (torpedo of this.torpedoes) {
+		torpedo.display();
+	}
+	
+
 	// ---- END Primitive drawing section
 };
 
 LightingScene.prototype.update = function(currTime) {
 	this.clock.update(currTime);
 	this.submarine.update(currTime);
+
 	/*let pos_vec = vec3.fromValues(this.submarine.update_vec[0]-10, this.submarine.update_vec[1]+3, this.submarine.update_vec[2]);
 	this.camera.setPosition(pos_vec);
 
 	let tar_vec = vec4.fromValues(this.submarine.update_vec[0]+1, this.submarine.update_vec[1], this.submarine.update_vec[2],1);
 	this.camera.setTarget(tar_vec); */
+
+	for (i = 0; i < this.torpedoes.length; i++) {		
+		if (this.torpedoes[i].collidedWithTarget(this.torpedoes[i].target)) {
+			this.torpedoes.splice(i, 1);
+			let targetInd = this.targets.indexOf(this.targets[i]);
+			this.targets.splice(targetInd, 1);
+		} else {
+			this.torpedoes[i].update(currTime);
+		}
+	}
 };
 
 LightingScene.prototype.Clock = function() {
@@ -282,4 +316,13 @@ LightingScene.prototype.rotateSubmarine_up = function(up){
 
 LightingScene.prototype.periscope_up = function(up){
 			this.submarine.peris_height += 0.1*up;
+}
+
+LightingScene.prototype.launchTorpedo = function() {
+	let torpX = this.submarine.x;
+	let torpY = this.submarine.y - CYLINDER_HEIGHT;
+	let torpZ = this.submarine.z;
+	let torpedo = new MyTorpedo(this, torpX, torpY, torpZ, this.submarine.vel_vec);
+	torpedo.lockTarget(this.targets[0]);
+	this.torpedoes.push(torpedo);
 }

@@ -82,6 +82,20 @@ function vec_norm(vec){
 	return Math.sqrt(vec[0]*vec[0] + vec[1]*vec[1] +vec[2]*vec[2]  );
 }
 
+function crossProduct(a, b) {
+
+    // Check lengths
+    if (a.length != 3 || b.length != 3) {
+        return;
+    }
+
+    return [a[1] * b[2] - a[2] * b[1],
+        	a[2] * b[0] - a[0] * b[2],
+        	a[0] * b[1] - a[1] * b[0]
+    ];
+
+}
+
 /*
 function compute_orientation(ori_vec, vel_vec){
 	 let v = vec3.create() //crossProduct(ori_vec, vel_vec);

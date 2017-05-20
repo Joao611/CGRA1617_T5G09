@@ -103,7 +103,6 @@ MyInterface.prototype.processKeyboard = function(event) {
 			break;
 		case ('S'):
 			this.scene.moveSubmarine(-1);
-
 			break;
 		case ('A'):
 			this.scene.rotateSubmarine(1);
@@ -117,11 +116,14 @@ MyInterface.prototype.processKeyboard = function(event) {
 		case ('E'):
 			this.scene.rotateSubmarine_up(-1);
 			break;
-			case ('P'):
-				this.scene.periscope_up(1);
-				break;
-			case ('L'):
-				this.scene.periscope_up(-1);
-				break;
+		case ('P'):
+			this.scene.periscope_up(1);
+			break;
+		case ('L'):
+			this.scene.periscope_up(-1);
+			break;
+		case ('F'):
+			this.scene.launchTorpedo();
+			break;
 	};
 };
