@@ -115,5 +115,8 @@ MyInterface.prototype.processKeyboard = function(event) {
 		case ('E'):
 			this.scene.rotateSubmarine_up(false);
 			break;
+		case ('F'):
+			this.scene.launchTorpedo();
+			break;
 	};
 };

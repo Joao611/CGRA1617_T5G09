@@ -47,7 +47,7 @@ LightingScene.prototype.init = function(application) {
 	this.targets = [];
 	this.initTargets();
 
-	this.testTorpedo = new MyTorpedo(this, 2, 2, 2, [1,0,0]);
+	this.torpedoes = [];
 
 	// Materials
 	this.defaultMaterial = new CGFappearance(this);
@@ -76,7 +76,7 @@ LightingScene.prototype.init = function(application) {
  	this.clockHandsAppearance.setSpecular(0,0,0,1);
  	this.clockHandsAppearance.setDiffuse(0,0,0,1);
 
-	this.setUpdatePeriod(16.667);
+	this.setUpdatePeriod(1/60*1000);
 
 	this.pushMatrix();
 		this.loadIdentity();
@@ -170,7 +170,7 @@ LightingScene.prototype.display = function() {
 	// ---- BEGIN Primitive drawing section
 
 	// Submarine
-	/*this.pushMatrix();
+	this.pushMatrix();
 		this.submarineAppearances[this.currSubmarineAppearance].apply();
 		this.multMatrix(this.subMatrix);
 		this.submarine.display();
@@ -203,10 +203,13 @@ LightingScene.prototype.display = function() {
 	// Targets
 	for (i = 0; i < this.targets.length; i++) {
 		this.targets[i].display();
-	}*/
+	}
 
-	// Test Torpedo
-	this.testTorpedo.display();
+	// Torpedoes
+	for (torpedo in this.torpedoes) {
+		torpedo.display();
+	}
+	
 
 	// ---- END Primitive drawing section
 };
@@ -284,4 +287,9 @@ LightingScene.prototype.rotateSubmarine = function(right) {
 
 LightingScene.prototype.rotateSubmarine_up = function(up){
 	this.submarine.update_vec_r[2] += 0.01*up;
+}
+
+LightingScene.prototype.launchTorpedo = function() {
+	let torpedo = new MyTorpedo(scene);
+	this.torpedoes.push(torpedo);
 }
