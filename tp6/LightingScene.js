@@ -43,7 +43,7 @@ LightingScene.prototype.init = function(application) {
 	this.sea = new MyQuad(this, 0, 15, 0, 15);
 	this.clock = new MyClock(this);
 	this.post = new MyCylinder(this, 12, 1);
-	
+
 	this.targets = [];
 	this.initTargets();
 
@@ -209,7 +209,7 @@ LightingScene.prototype.display = function() {
 	for (torpedo of this.torpedoes) {
 		torpedo.display();
 	}
-	
+
 
 	// ---- END Primitive drawing section
 };
@@ -224,9 +224,9 @@ LightingScene.prototype.update = function(currTime) {
 	let tar_vec = vec4.fromValues(this.submarine.update_vec[0]+1, this.submarine.update_vec[1], this.submarine.update_vec[2],1);
 	this.camera.setTarget(tar_vec); */
 
-	for (i = 0; i < this.torpedoes.length; i++) {		
+	for (i = 0; i < this.torpedoes.length; i++) {
 		if (this.torpedoes[i].collidedWithTarget(this.torpedoes[i].target)) {
-			this.torpedoes.splice(i, 1);
+			this.torpedoes = this.torpedoes.splice(i, 1);
 			let targetInd = this.targets.indexOf(this.targets[i]);
 			this.targets.splice(targetInd, 1);
 		} else {
@@ -244,7 +244,7 @@ function getOrientationVector(xzAngle, xyAngle) {
 	return [Math.cos(xzAngle * degToRad), Math.sin(xyAngle * degToRad), Math.sin(xzAngle * degToRad)];
 }
 
-// forward: bool
+// forward: bool	this.torpedoes.pop();
 LightingScene.prototype.moveSubmarine = function(forward) {
 	let subMovement = 1;
 	/*this.pushMatrix();
@@ -319,10 +319,12 @@ LightingScene.prototype.periscope_up = function(up){
 }
 
 LightingScene.prototype.launchTorpedo = function() {
-	let torpX = this.submarine.x;
-	let torpY = this.submarine.y - CYLINDER_HEIGHT;
-	let torpZ = this.submarine.z;
+	let torpX = this.submarine.update_vec[0];
+	let torpY = this.submarine.update_vec[1] - CYLINDER_HEIGHT;
+	let torpZ = this.submarine.update_vec[2];
 	let torpedo = new MyTorpedo(this, torpX, torpY, torpZ, this.submarine.vel_vec);
 	torpedo.lockTarget(this.targets[0]);
 	this.torpedoes.push(torpedo);
+	//torpedo = null;
+	//delete torpedo;
 }
