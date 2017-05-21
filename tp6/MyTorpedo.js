@@ -55,8 +55,8 @@ MyTorpedo.prototype.display = function() {
 
 	this.scene.pushMatrix();
         this.scene.translate(this.x, this.y, this.z);
-		this.scene.rotate(this.xyOrientation, 0, 0, 1);
-		this.scene.rotate(this.xzOrientation, 0, 1, 0);
+		this.scene.rotate(this.xyOrientation * degToRad, 0, 0, 1);
+		this.scene.rotate(this.xzOrientation * degToRad, 0, 1, 0);
 		
 //         this.scene.rotate(this.update_r[0], 1, 0, 0);
 //         this.scene.rotate(this.update_r[1]+Math.PI/2, 0, 1, 0);
@@ -107,8 +107,6 @@ MyTorpedo.prototype.display = function() {
 }
 
 
-
-
 function getRotAng(newOrientation, originalOrientation) {
     let delta = sub_vecs(newOrientation, originalOrientation);
 
@@ -152,6 +150,12 @@ MyTorpedo.prototype._updateLocation = function(t) {
 		let thirdTerm = 3 * t * t * (1-t) * this.P3[i];
 		let fourthTerm = t * t * t * this.P4[i];
 		newPoint[i] = firstTerm + secondTerm + thirdTerm + fourthTerm;
+	}
+	let deltaX = newPoint[0] - this.x;
+	let deltaY = newPoint[1] - this.y;
+	let deltaZ = newPoint[2] - this.z;
+	if (deltaZ != 0) {
+		this.xzOrientation = Math.atan(deltaX / deltaZ) / degToRad;
 	}
 //	let rotAng = Math.acos(dot_prod(newOri, this.direction))
 //	this.update_r += [newPoint[0]-this.x, newPoint[1]-this.y, newPoint[2]-this.z];
