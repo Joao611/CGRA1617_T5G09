@@ -230,6 +230,7 @@ MySubmarine.prototype.display = function() {
     // 0.5 = trapezoid width
     this.scene.pushMatrix();
     this.scene.translate(0, CYLINDER_HEIGHT / 2 + TOWER_HEIGHT / 2, 0);
+    //this.scene.rotate(this.rudder_r*Math.PI/6, 0, 1,0);
     this.scene.scale(TOWER_ELEVATOR_WIDTH / 0.5, 1, TOWER_ELEVATOR_BIG_LENGTH / 2.34);
     this.scene.rotate(-Math.PI / 2, 0, 0, 1);
     this.scene.rotate(Math.PI / 2, 1, 0, 0);

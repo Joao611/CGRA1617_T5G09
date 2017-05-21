@@ -275,7 +275,7 @@ LightingScene.prototype.moveSubmarine = function(forward) {
 // 		this.multMatrix(this.subMatrix);
 // 		this.subMatrix = this.getMatrix();
 // 	this.popMatrix();
-	
+
 
 // 	if (forward) {
 // 		this.submarine.vel_vec[0] += forward;
@@ -302,21 +302,24 @@ LightingScene.prototype.rotateSubmarine = function(right) {
 	//	this.multMatrix(this.subMatrix);
 	//	this.subMatrix = this.getMatrix();
 	//this.popMatrix();
-	
 
-	/*this.submarine.update_vec_r[1] += 0.01*right;
+
+	//this.submarine.update_vec_r[1] += 0.01*right;
+	if(this.submarine.speed != 0){
 	if(this.submarine.elevator_r == 0)
 		this.submarine.elevator_r = 0.09;
 	if(right != 0)
-		this.submarine.elevator_r = (right+0.1);*/
-
+		this.submarine.elevator_r = (right+0.1);
+}
 
 
 }
 
 LightingScene.prototype.rotateSubmarine_up = function(up){
 // 	this.submarine.update_vec_r[2] += 0.01*up;
+if(this.submarine.speed != 0){
 	this.submarine.rudder_r = up;
+}
 
 	let rotAng = 5; // degrees
 	this.submarine.xyOrientation += up * rotAng;
