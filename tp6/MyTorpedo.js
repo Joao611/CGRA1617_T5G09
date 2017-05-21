@@ -32,6 +32,8 @@ function MyTorpedo(scene, x, y, z, orientation) {
 
 	this.startTime = -1;
 	this.unitsPerSec = 1;
+
+	this.t = 0;
 }
 
 MyTorpedo.prototype = Object.create(CGFobject.prototype);
@@ -145,13 +147,14 @@ MyTorpedo.prototype.lockTarget = function(target) {
 
 
 MyTorpedo.prototype.update = function(currTime) {
-	let t = this._getPathTime(currTime);
-	this._updateLocation(t);
+	this.t = this._getPathTime(currTime);
+	this._updateLocation(this.t);
 }
 
 MyTorpedo.prototype.collidedWithTarget = function(target) {
-	let delta = Math.pow(10, 0);
-	return (Math.abs(this.x - target.x) < delta
-			&& Math.abs(this.y - target.x) < delta
-			&& Math.abs(this.z - target.z) < delta);
+	let delta = Math.pow(10, -1);
+	return Math.abs(this.t - 1) <= delta;
+// 	return (Math.abs(this.x - target.x) < delta
+// 			&& Math.abs(this.y - target.x) < delta
+// 			&& Math.abs(this.z - target.z) < delta);
 }
