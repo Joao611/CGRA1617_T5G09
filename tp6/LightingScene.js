@@ -10,6 +10,11 @@ function LightingScene() {
 	CGFscene.call(this);
 }
 
+function vec_norm(vec){
+	return Math.sqrt(vec[0]*vec[0] + vec[1]*vec[1] +vec[2]*vec[2]  );
+}
+
+
 LightingScene.prototype = Object.create(CGFscene.prototype);
 LightingScene.prototype.constructor = LightingScene;
 
@@ -134,7 +139,6 @@ LightingScene.prototype.initLights = function() {
 	this.lights[2].setDiffuse(1.0, 1.0, 1.0, 1.0);
 	this.lights[2].setSpecular(1.0, 1.0, 1.0, 1.0);
 	this.lights[2].setConstantAttenuation(0.0);
-	//this.lights[2].setLinearAttenuation(0.2);
 	this.lights[2].setLinearAttenuation(1.0);
 	this.lights[2].setQuadraticAttenuation(0.0);
 	this.lights[2].enable();
@@ -222,12 +226,6 @@ LightingScene.prototype.update = function(currTime) {
 	this.clock.update(currTime);
 	this.submarine.update(currTime);
 
-	/*let pos_vec = vec3.fromValues(this.submarine.update_vec[0]-10, this.submarine.update_vec[1]+3, this.submarine.update_vec[2]);
-	this.camera.setPosition(pos_vec);
-
-	let tar_vec = vec4.fromValues(this.submarine.update_vec[0]+1, this.submarine.update_vec[1], this.submarine.update_vec[2],1);
-	this.camera.setTarget(tar_vec); */
-
 	for (let k = 0; k < this.targets.length; k++) {
 			this.targets[k].update(currTime);
 			let targetInd = this.targets.indexOf(this.targets[k]);
@@ -240,8 +238,6 @@ LightingScene.prototype.update = function(currTime) {
 			this.torpedoes.splice(i, 1);
 			let targetInd = this.targets.indexOf(this.targets[i]);
 			this.targets[targetInd].target_explode = true;
-			//if(this.targets[targetInd].radius < 0.1)
-			//	this.targets.splice(targetInd, 1);
 		} else {
 			this.torpedoes[i].update(currTime);
 		}
@@ -314,12 +310,7 @@ LightingScene.prototype.rotateSubmarine = function(right) {
 	if(right != 0)
 		this.submarine.elevator_r = (right+0.1);*/
 
-	/*
-	if (right) {
-		this.submarine.update_vec_r[1] += rotAng * degToRad;
-	} else {
-		this.submarine.update_vec_r[1] -= rotAng * degToRad;
-	} */
+
 
 }
 
