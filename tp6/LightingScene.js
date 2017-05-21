@@ -290,6 +290,9 @@ LightingScene.prototype.periscope_up = function(up){
 }
 
 LightingScene.prototype.launchTorpedo = function() {
+	if (this.targets.length == 0) {
+		return;
+	}
 	let torpX = this.submarine.update_vec[0];
 	let torpY = this.submarine.update_vec[1] - CYLINDER_HEIGHT;
 	let torpZ = this.submarine.update_vec[2];
