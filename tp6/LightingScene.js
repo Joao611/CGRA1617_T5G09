@@ -76,6 +76,10 @@ LightingScene.prototype.init = function(application) {
  	this.clockHandsAppearance.setSpecular(0,0,0,1);
  	this.clockHandsAppearance.setDiffuse(0,0,0,1);
 
+	this.explosionapp = new CGFappearance(this);
+ 	//this.explosionapp.setSpecular(0,0,0,1);
+ 	this.explosionapp.setDiffuse(256,165,0,1);
+
 	this.setUpdatePeriod(1/60*1000);
 
 	this.pushMatrix();
@@ -224,11 +228,20 @@ LightingScene.prototype.update = function(currTime) {
 	let tar_vec = vec4.fromValues(this.submarine.update_vec[0]+1, this.submarine.update_vec[1], this.submarine.update_vec[2],1);
 	this.camera.setTarget(tar_vec); */
 
+	for (let k = 0; k < this.targets.length; k++) {
+			this.targets[k].update(currTime);
+			let targetInd = this.targets.indexOf(this.targets[k]);
+			if(this.targets[k].radius < 0.1 && this.targets[k].target_explode)
+				this.targets.splice(targetInd, 1);
+	}
+
 	for (let i = 0; i < this.torpedoes.length; i++) {
 		if (this.torpedoes[i].collidedWithTarget(this.torpedoes[i].target)) {
 			this.torpedoes.splice(i, 1);
 			let targetInd = this.targets.indexOf(this.targets[i]);
-			this.targets.splice(targetInd, 1);
+			this.targets[targetInd].target_explode = true;
+			//if(this.targets[targetInd].radius < 0.1)
+			//	this.targets.splice(targetInd, 1);
 		} else {
 			this.torpedoes[i].update(currTime);
 		}
@@ -322,7 +335,7 @@ LightingScene.prototype.launchTorpedo = function() {
 	let torpX = this.submarine.update_vec[0];
 	let torpY = this.submarine.update_vec[1] - CYLINDER_HEIGHT;
 	let torpZ = this.submarine.update_vec[2];
-	let torpedo = new MyTorpedo(this, torpX, torpY, torpZ, this.submarine.vel_vec);
+	let torpedo = new MyTorpedo(this, torpX, torpY, torpZ,  this.submarine.update_vec_r);
 	torpedo.lockTarget(this.targets[0]);
 	this.torpedoes.push(torpedo);
 	//torpedo = null;

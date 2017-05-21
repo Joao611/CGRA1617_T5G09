@@ -21,6 +21,8 @@ function MyTorpedo(scene, x, y, z, orientation) {
     this.orientation = orientation.slice();
     this.originalOrientation = orientation.slice();
 
+    this.update_r = orientation;
+
     this.target;
 
     this.frontSphere = new MyLamp(scene, 12, 8);
@@ -42,17 +44,25 @@ MyTorpedo.prototype.constructor = MyTorpedo;
 MyTorpedo.prototype.display = function() {
     let rotAng = getRotAng(this.orientation, this.originalOrientation);
     let rotAxis = crossProduct(this.originalOrientation, this.orientation);
-	
+
 	this.scene.pushMatrix();
         this.scene.translate(this.x, this.y, this.z);
-     	this.scene.rotate(rotAng, rotAxis[0], rotAxis[1], rotAxis[2]);
+
+        this.scene.rotate(this.update_r[0], 1, 0, 0);
+        this.scene.rotate(this.update_r[1]+Math.PI/2, 0, 1, 0);
+        this.scene.rotate(this.update_r[2], 0, 0, 1);
+
+
+     	//this.scene.rotate(rotAng, rotAxis[0], rotAxis[1], rotAxis[2]);
+      //this.scene.rotate(Math.PI/2, 0, 1, 0);
+
 
 		// Main body
    		this.scene.pushMatrix();
         	this.scene.scale(TORP.CYLINDER_WIDTH/2, TORP.CYLINDER_HEIGHT/2, TORP.CYLINDER_LENGTH);
         	this.mainCylinder.display();
     	this.scene.popMatrix();
-		
+
 		// Front tip
     	this.scene.pushMatrix();
     		this.scene.translate(0, 0, TORP.CYLINDER_LENGTH);

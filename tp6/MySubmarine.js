@@ -164,11 +164,13 @@ MySubmarine.prototype.display = function() {
     this.scene.rotate(this.update_vec_r[2]/vec_length, 0, 0, 1);
 */
 
-this.scene.rotate(this.update_vec_r[0]/vec_length, 1, 0, 0);
-this.scene.rotate(this.update_vec_r[1]/vec_length, 0, 1, 0);
-this.scene.rotate(this.update_vec_r[2]/vec_length, 0, 0, 1);
+
 
 this.scene.translate(this.update_vec[0], this.update_vec[1], this.update_vec[2]);
+
+this.scene.rotate(this.update_vec_r[0], 1, 0, 0);
+this.scene.rotate(this.update_vec_r[1], 0, 1, 0);
+this.scene.rotate(this.update_vec_r[2], 0, 0, 1);
 
 
     this.scene.pushMatrix();
