@@ -176,7 +176,7 @@ LightingScene.prototype.display = function() {
 	// Submarine
 	this.pushMatrix();
 		this.submarineAppearances[this.currSubmarineAppearance].apply();
-		this.multMatrix(this.subMatrix);
+	//	this.multMatrix(this.subMatrix);
 		this.submarine.display();
 	this.popMatrix();
 
@@ -257,61 +257,62 @@ function getOrientationVector(xzAngle, xyAngle) {
 	return [Math.cos(xzAngle * degToRad), Math.sin(xyAngle * degToRad), Math.sin(xzAngle * degToRad)];
 }
 
-// forward: bool	this.torpedoes.pop();
+// forward: 1 or -1
 LightingScene.prototype.moveSubmarine = function(forward) {
-	let subMovement = 1;
-	/*this.pushMatrix();
-		this.loadIdentity();
-		if (forward) {
-			let transArg = getOrientationVector(this.submarine.xzOrientation, this.submarine.xyOrientation).map(x => x * subMovement);
-			this.translate(transArg[0], transArg[1], transArg[2]);
-			this.submarine.x += transArg[0];
-			this.submarine.y += transArg[1];
-			this.submarine.z += transArg[2];
-		} else {
-			let transArg = getOrientationVector(this.submarine.xzOrientation, this.submarine.xyOrientation).map(x => x * -subMovement);
-			this.translate(transArg[0], transArg[1], transArg[2]);
-			this.submarine.x += transArg[0];
-			this.submarine.y += transArg[1];
-			this.submarine.z += transArg[2];
-		}
-		this.multMatrix(this.subMatrix);
-		this.subMatrix = this.getMatrix();
-	this.popMatrix();
-	*/
+	this.submarine.speed += forward;
+// 	let subMovement = 1;
+// 	this.pushMatrix();
+// 		this.loadIdentity();
+// 		if (forward) {
+// 			let transArg = getOrientationVector(this.submarine.xzOrientation, this.submarine.xyOrientation).map(x => x * forward * subMovement);
+// 			this.translate(transArg[0], transArg[1], transArg[2]);
+// 			this.submarine.x += transArg[0];
+// 			this.submarine.y += transArg[1];
+// 			this.submarine.z += transArg[2];
+// 		} else {
+// 			let transArg = getOrientationVector(this.submarine.xzOrientation, this.submarine.xyOrientation).map(x => x * -subMovement);
+// 			this.translate(transArg[0], transArg[1], transArg[2]);
+// 			this.submarine.x += transArg[0];
+// 			this.submarine.y += transArg[1];
+// 			this.submarine.z += transArg[2];
+// 		}
+// 		this.multMatrix(this.subMatrix);
+// 		this.subMatrix = this.getMatrix();
+// 	this.popMatrix();
+	
 
-	if (forward) {
-		this.submarine.vel_vec[0] += forward;
-	} else {
-		this.submarine.vel_vec[0] -= forward;
-	}
+// 	if (forward) {
+// 		this.submarine.vel_vec[0] += forward;
+// 	} else {
+// 		this.submarine.vel_vec[0] -= forward;
+// 	}
 }
 
-// right: bool
+// right: 1 or -1
 LightingScene.prototype.rotateSubmarine = function(right) {
 	let rotAng = 5; // degrees
-	/*this.pushMatrix();
-		this.loadIdentity();
-		this.translate(this.submarine.x, this.submarine.y, this.submarine.z); //move back to actual position
-		if (right) {
-			this.rotate(rotAng * degToRad, 0, 1, 0);
-			this.submarine.xzOrientation -= rotAng;
-		} else {
-			this.rotate(-rotAng * degToRad, 0, 1, 0);
-			this.submarine.xzOrientation += rotAng;
-		}
+	//this.pushMatrix();
+	//	this.loadIdentity();
+	//	this.translate(this.submarine.x, this.submarine.y, this.submarine.z); //move back to actual position
+	//	if (right) {
+		//	this.rotate(right * rotAng * degToRad, 0, 1, 0);
+			this.submarine.xzOrientation += -right * rotAng;
+	//	} else {
+	//		this.rotate(-rotAng * degToRad, 0, 1, 0);
+	//		this.submarine.xzOrientation += rotAng;
+	//	}
 		this.submarine.xzOrientation %= 360;
-		this.translate(-this.submarine.x, -this.submarine.y, -this.submarine.z); //move to origin
-		this.multMatrix(this.subMatrix);
-		this.subMatrix = this.getMatrix();
-	this.popMatrix();
-	*/
+	//	this.translate(-this.submarine.x, -this.submarine.y, -this.submarine.z); //move to origin
+	//	this.multMatrix(this.subMatrix);
+	//	this.subMatrix = this.getMatrix();
+	//this.popMatrix();
+	
 
-	this.submarine.update_vec_r[1] += 0.01*right;
+	/*this.submarine.update_vec_r[1] += 0.01*right;
 	if(this.submarine.elevator_r == 0)
 		this.submarine.elevator_r = 0.09;
 	if(right != 0)
-		this.submarine.elevator_r = (right+0.1);
+		this.submarine.elevator_r = (right+0.1);*/
 
 	/*
 	if (right) {
@@ -323,22 +324,29 @@ LightingScene.prototype.rotateSubmarine = function(right) {
 }
 
 LightingScene.prototype.rotateSubmarine_up = function(up){
-	this.submarine.update_vec_r[2] += 0.01*up;
+// 	this.submarine.update_vec_r[2] += 0.01*up;
 	this.submarine.rudder_r = up;
+
+	let rotAng = 5; // degrees
+	this.submarine.xyOrientation += up * rotAng;
+	this.submarine.xyOrientation %= 360;
 }
 
 LightingScene.prototype.periscope_up = function(up){
-			this.submarine.peris_height += 0.1*up;
+	this.submarine.peris_height += 0.1*up;
 }
 
 LightingScene.prototype.launchTorpedo = function() {
 	if (this.targets.length == 0) {
 		return;
 	}
-	let torpX = this.submarine.update_vec[0];
-	let torpY = this.submarine.update_vec[1] - CYLINDER_HEIGHT;
-	let torpZ = this.submarine.update_vec[2];
-	let torpedo = new MyTorpedo(this, torpX, torpY, torpZ,  this.submarine.update_vec_r);
+// 	let torpX = this.submarine.update_vec[0];
+// 	let torpY = this.submarine.update_vec[1] - CYLINDER_HEIGHT;
+// 	let torpZ = this.submarine.update_vec[2];
+	let torpX = this.submarine.x;
+	let torpY = this.submarine.y;
+	let torpZ = this.submarine.z;
+	let torpedo = new MyTorpedo(this, torpX, torpY, torpZ, this.submarine.xyOrientation, this.submarine.xzOrientation);
 	torpedo.lockTarget(this.targets[0]);
 	this.torpedoes.push(torpedo);
 	//torpedo = null;

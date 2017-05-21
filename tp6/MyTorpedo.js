@@ -12,16 +12,16 @@ TORP.FIN_WIDTH = 0.05;
 TORP.FIN_LENGTH = TORP.CYLINDER_WIDTH + 0.3;
 TORP.FIN_THICKNESS = 0.01;
 
-function MyTorpedo(scene, x, y, z, orientation) {
+function MyTorpedo(scene, x, y, z, xyOrientation, xzOrientation) {
     CGFobject.call(this, scene);
 
     this.x = x;
     this.y = y;
     this.z = z;
-    this.orientation = orientation.slice();
-    this.originalOrientation = orientation.slice();
+    this.xyOrientation = xyOrientation;
+    this.xzOrientation = xzOrientation;
 
-    this.update_r = orientation;
+//    this.update_r = orientation;
 
     this.target;
 
@@ -42,19 +42,21 @@ MyTorpedo.prototype = Object.create(CGFobject.prototype);
 MyTorpedo.prototype.constructor = MyTorpedo;
 
 MyTorpedo.prototype.display = function() {
-    let rotAng = getRotAng(this.orientation, this.originalOrientation);
-    let rotAxis = crossProduct(this.originalOrientation, this.orientation);
+//     let rotAng = getRotAng(this.orientation, this.originalOrientation);
+//     let rotAxis = crossProduct(this.originalOrientation, this.orientation);
 
 	this.scene.pushMatrix();
         this.scene.translate(this.x, this.y, this.z);
+		this.scene.rotate(this.xyOrientation, 0, 0, 1);
+		this.scene.rotate(this.xzOrientation, 0, 1, 0);
+		
+//         this.scene.rotate(this.update_r[0], 1, 0, 0);
+//         this.scene.rotate(this.update_r[1]+Math.PI/2, 0, 1, 0);
+//         this.scene.rotate(this.update_r[2], 0, 0, 1);
 
-        this.scene.rotate(this.update_r[0], 1, 0, 0);
-        this.scene.rotate(this.update_r[1]+Math.PI/2, 0, 1, 0);
-        this.scene.rotate(this.update_r[2], 0, 0, 1);
 
-
-     	//this.scene.rotate(rotAng, rotAxis[0], rotAxis[1], rotAxis[2]);
-      //this.scene.rotate(Math.PI/2, 0, 1, 0);
+//      	this.scene.rotate(rotAng, rotAxis[0], rotAxis[1], rotAxis[2]);
+//       	this.scene.rotate(Math.PI/2, 0, 1, 0);
 
 
 		// Main body
@@ -117,7 +119,7 @@ MyTorpedo.prototype._initTrajectory = function() {
 	this.totalDistance = Math.sqrt(Math.pow(this.target.x - this.x, 2)
 								+ Math.pow(this.target.y - this.y, 2)
 								+ Math.pow(this.target.z - this.z, 2));
-	let normalizedOrientation = normalize(this.orientation);
+	let normalizedOrientation = normalize(getOrientationVector(this.xzOrientation, this.xyOrientation));
 	this.P1 = [this.x, this.y, this.z];
 	this.P2 = [this.target.x + 6*normalizedOrientation[0],
 				this.target.y + 6*normalizedOrientation[1],
@@ -144,7 +146,8 @@ MyTorpedo.prototype._updateLocation = function(t) {
 		let fourthTerm = t * t * t * this.P4[i];
 		newPoint[i] = firstTerm + secondTerm + thirdTerm + fourthTerm;
 	}
-
+//	let rotAng = Math.acos(dot_prod(newOri, this.direction))
+//	this.update_r += [newPoint[0]-this.x, newPoint[1]-this.y, newPoint[2]-this.z];
 	this.x = newPoint[0];
 	this.y = newPoint[1];
 	this.z = newPoint[2];
@@ -164,7 +167,4 @@ MyTorpedo.prototype.update = function(currTime) {
 MyTorpedo.prototype.collidedWithTarget = function(target) {
 	let delta = Math.pow(10, -1);
 	return Math.abs(this.t - 1) <= delta;
-// 	return (Math.abs(this.x - target.x) < delta
-// 			&& Math.abs(this.y - target.x) < delta
-// 			&& Math.abs(this.z - target.z) < delta);
 }

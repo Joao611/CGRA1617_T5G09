@@ -119,11 +119,12 @@ function MySubmarine(scene) {
     this.z = 0;
     this.xzOrientation = 90; // degrees
     this.xyOrientation = 0; // degrees //TODO
+    this.speed = 1;
 
-    this.vel_vec = [-1, 0, 0];
-    this.update_vec = [0, 0, 0];
-    this.update_vec_r = [0, 0, 0];
-    this.init_ori = [-1, 0, 0];
+//     this.vel_vec = [-1, 0, 0];
+//     this.update_vec = [0, 0, 0];
+//     this.update_vec_r = [0, 0, 0];
+//     this.init_ori = [-1, 0, 0];
 
     this.rot_matrix;
 
@@ -155,9 +156,9 @@ MySubmarine.prototype.constructor = MySubmarine;
 
 MySubmarine.prototype.display = function() {
 
-		var old_pos = this.update_vec.slice(0);
+	//	var old_pos = this.update_vec.slice(0);
 
-    let vec_length = vec_norm(this.update_vec);
+//let vec_length = vec_norm(this.update_vec);
 
 /*    this.scene.rotate(this.update_vec_r[0]/vec_length, 1, 0, 0);
     this.scene.rotate(this.update_vec_r[1]/vec_length, 0, 1, 0);
@@ -166,12 +167,15 @@ MySubmarine.prototype.display = function() {
 
 
 
-this.scene.translate(this.update_vec[0], this.update_vec[1], this.update_vec[2]);
+//	this.scene.translate(this.update_vec[0], this.update_vec[1], this.update_vec[2]);
 
-this.scene.rotate(this.update_vec_r[0], 1, 0, 0);
-this.scene.rotate(this.update_vec_r[1], 0, 1, 0);
-this.scene.rotate(this.update_vec_r[2], 0, 0, 1);
+// 	this.scene.rotate(this.update_vec_r[0], 1, 0, 0);
+// 	this.scene.rotate(this.update_vec_r[1], 0, 1, 0);
+// 	this.scene.rotate(this.update_vec_r[2], 0, 0, 1);
 
+	this.scene.translate(this.x, this.y, this.z);
+	this.scene.rotate(-this.xyOrientation * degToRad, 0, 0, 1);
+	this.scene.rotate(-this.xzOrientation * degToRad, 0, 1, 0);
 
     this.scene.pushMatrix();
 
@@ -281,7 +285,7 @@ this.scene.rotate(this.update_vec_r[2], 0, 0, 1);
     // 2.34 = trapezoid height
     this.scene.pushMatrix();
     this.scene.translate(-CYLINDER_LENGTH / 2, 0, 0);
-		this.scene.rotate(this.elevator_r*Math.PI/6, 0, 1,0);
+	this.scene.rotate(this.elevator_r*Math.PI/6, 0, 1,0);
     this.scene.scale(-1, RUDDER_BIG_HEIGHT / 2.34, -1);
     this.scene.rotate(Math.PI / 2, 0, 1, 0);
     this.rudder.display();
@@ -291,7 +295,7 @@ this.scene.rotate(this.update_vec_r[2], 0, 0, 1);
 
     this.scene.pushMatrix();
     this.scene.translate(-CYLINDER_LENGTH / 2, 0, 0);
-		this.scene.rotate(this.rudder_r*Math.PI/6, 0,0,1);
+	this.scene.rotate(this.rudder_r*Math.PI/6, 0,0,1);
     this.scene.scale(1, 1, RUDDER_BIG_HEIGHT / 2.34);
     this.scene.rotate(-Math.PI / 2, 0, 0, 1);
     this.scene.rotate(Math.PI / 2, 1, 0, 0);
@@ -300,8 +304,6 @@ this.scene.rotate(this.update_vec_r[2], 0, 0, 1);
 
 
     this.scene.popMatrix();
-
-
 }
 
 MySubmarine.prototype.update = function(currTime) {
@@ -313,15 +315,20 @@ MySubmarine.prototype.update = function(currTime) {
 
     this.time = (currTime - this.oldtime);
 
+	let orientation = getOrientationVector(this.xzOrientation, this.xyOrientation);
+	this.x += this.speed * orientation[0] * this.time / VEL_CONST;
+	this.y += this.speed * orientation[1] * this.time / VEL_CONST;
+	this.z += this.speed * orientation[2] * this.time / VEL_CONST;
+
     //this.update_vec = [-0.0000000000000000000001, 0 ,0];//this.vel_vec * this.time/1000;
-    this.update_vec[0] += this.vel_vec[0] * this.time / VEL_CONST;
-    this.update_vec[1] += this.vel_vec[1] * this.time / VEL_CONST;
-    this.update_vec[2] += this.vel_vec[2] * this.time / VEL_CONST;
+//     this.update_vec[0] += this.vel_vec[0] * this.time / VEL_CONST;
+//     this.update_vec[1] += this.vel_vec[1] * this.time / VEL_CONST;
+//     this.update_vec[2] += this.vel_vec[2] * this.time / VEL_CONST;
 
 		if(this.propeller.angle > 1.0)
 			this.propeller.angle = 0;
 		else
-			this.propeller.angle = ((this.time%1000)/1000)*vec_norm(this.vel_vec);
+			this.propeller.angle = ((this.time%1000)/1000)*this.speed;//vec_norm(this.vel_vec);
 
 			this.rudder_r *= 0.95;
 			this.elevator_r *= 0.95;
