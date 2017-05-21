@@ -224,9 +224,9 @@ LightingScene.prototype.update = function(currTime) {
 	let tar_vec = vec4.fromValues(this.submarine.update_vec[0]+1, this.submarine.update_vec[1], this.submarine.update_vec[2],1);
 	this.camera.setTarget(tar_vec); */
 
-	for (i = 0; i < this.torpedoes.length; i++) {
+	for (let i = 0; i < this.torpedoes.length; i++) {
 		if (this.torpedoes[i].collidedWithTarget(this.torpedoes[i].target)) {
-			this.torpedoes = this.torpedoes.splice(i, 1);
+			this.torpedoes.splice(i, 1);
 			let targetInd = this.targets.indexOf(this.targets[i]);
 			this.targets.splice(targetInd, 1);
 		} else {
