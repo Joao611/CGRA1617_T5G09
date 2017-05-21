@@ -12,6 +12,15 @@ TORP.FIN_WIDTH = 0.05;
 TORP.FIN_LENGTH = TORP.CYLINDER_WIDTH + 0.3;
 TORP.FIN_THICKNESS = 0.01;
 
+function vec_norm(vec){
+	return Math.sqrt(vec[0]*vec[0] + vec[1]*vec[1] +vec[2]*vec[2]  );
+}
+
+
+function dot_prod(vec1, vec2) {
+    return (vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2]);
+}
+
 function MyTorpedo(scene, x, y, z, orientation) {
     CGFobject.call(this, scene);
 
@@ -51,11 +60,6 @@ MyTorpedo.prototype.display = function() {
         this.scene.rotate(this.update_r[0], 1, 0, 0);
         this.scene.rotate(this.update_r[1]+Math.PI/2, 0, 1, 0);
         this.scene.rotate(this.update_r[2], 0, 0, 1);
-
-
-     	//this.scene.rotate(rotAng, rotAxis[0], rotAxis[1], rotAxis[2]);
-      //this.scene.rotate(Math.PI/2, 0, 1, 0);
-
 
 		// Main body
    		this.scene.pushMatrix();
@@ -164,7 +168,5 @@ MyTorpedo.prototype.update = function(currTime) {
 MyTorpedo.prototype.collidedWithTarget = function(target) {
 	let delta = Math.pow(10, -1);
 	return Math.abs(this.t - 1) <= delta;
-// 	return (Math.abs(this.x - target.x) < delta
-// 			&& Math.abs(this.y - target.x) < delta
-// 			&& Math.abs(this.z - target.z) < delta);
+
 }

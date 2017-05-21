@@ -48,6 +48,6 @@ MyPropeller.prototype.display = function() {
 
 // Angle in degrees.
 MyPropeller.prototype.set_s_angle = function(angle) {
-    //let radAngle = angle * Math.PI / 180;
+    
     this.s_angle = angle;
 }

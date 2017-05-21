@@ -96,20 +96,6 @@ function crossProduct(a, b) {
 
 }
 
-/*
-function compute_orientation(ori_vec, vel_vec){
-	 let v = vec3.create() //crossProduct(ori_vec, vel_vec);
-	 let s = vec_norm(v) * Math.sin(Math.acos(dot_prod(ori_vec, vel_vec)/(vec_norm(ori_vec)*vec_norm(vel_vec))));
-	 let c = crossProduct(a, b)* dot_prod(ori_vec, vel_vec)/(vec_norm(ori_vec)*vec_norm(vel_vec));
-	 let v_s = skew_mat(v);
-	 let l = 1/(1+c);
-	 let lr = scal_mul(m_multiply(v_s,v_s), l);
-
-	 let i = [ [1,1,1], [1,1,1] , [1,1,1]];
-
-	 return (add_matrix( add_matrix(i, v_s), lr));
-} */
-
 
 function MySubmarine(scene) {
     CGFobject.call(this, scene);
@@ -159,51 +145,13 @@ MySubmarine.prototype.display = function() {
 
     let vec_length = vec_norm(this.update_vec);
 
-/*    this.scene.rotate(this.update_vec_r[0]/vec_length, 1, 0, 0);
-    this.scene.rotate(this.update_vec_r[1]/vec_length, 0, 1, 0);
-    this.scene.rotate(this.update_vec_r[2]/vec_length, 0, 0, 1);
-*/
-
-
-
-this.scene.translate(this.update_vec[0], this.update_vec[1], this.update_vec[2]);
-
 this.scene.rotate(this.update_vec_r[0], 1, 0, 0);
 this.scene.rotate(this.update_vec_r[1], 0, 1, 0);
 this.scene.rotate(this.update_vec_r[2], 0, 0, 1);
 
+this.scene.translate(this.update_vec[0], this.update_vec[1], this.update_vec[2]);
 
     this.scene.pushMatrix();
-
-
-
-    //	this.scene.translate((CYLINDER_LENGTH/2) - PROP_OFFSET_LENGTH,0,0);
-
-    //		this.scene.translate(-(CYLINDER_LENGTH/2) - PROP_OFFSET_LENGTH,0,0);
-    //				this.scene.multMatrix(this.rot_matrix);
-    //this.scene.translate(-this.update_vec[0], -this.update_vec[1], -this.update_vec[2]);
-    //	this.scene.rotate(this.update_vec_r[0], 1 ,0,0);
-    //	this.scene.rotate(this.update_vec_r[1], 0,1, 0);
-    //	this.scene.rotate(this.update_vec_r[2], 0, 0, 1);
-//		this.scene.translate(old_pos[0], old_pos[1], old_pos[2]);
-
-	//	this.scene.translate(-old_pos[0], -old_pos[1], -old_pos[2]);
-
-	//this.update_vec_r = normalize(this.update_vec_r);
-
-	/*	this.scene.translate(
-				rotate_vect(this.update_vec, this.update_vec_r[0]*Math.PI*2, 'x')[0],
-				rotate_vect(this.update_vec, this.update_vec_r[1]*Math.PI*2, 'y')[1],
-				rotate_vect(this.update_vec, this.update_vec_r[2]*Math.PI*2, 'z')[2]); */
-
-			//	this.scene.rotate(this.update_vec_r[0], 1, 0, 0);
-			//	this.scene.rotate(this.update_vec_r[1], 0, 1, 0);
-			//	this.scene.rotate(this.update_vec_r[2], 0, 0, 1);
-
-
-
-
-//
 
     this.scene.pushMatrix();
     this.scene.translate(-CYLINDER_LENGTH / 2, 0, 0);
@@ -313,25 +261,21 @@ MySubmarine.prototype.update = function(currTime) {
 
     this.time = (currTime - this.oldtime);
 
-    //this.update_vec = [-0.0000000000000000000001, 0 ,0];//this.vel_vec * this.time/1000;
     this.update_vec[0] += this.vel_vec[0] * this.time / VEL_CONST;
     this.update_vec[1] += this.vel_vec[1] * this.time / VEL_CONST;
     this.update_vec[2] += this.vel_vec[2] * this.time / VEL_CONST;
 
 		if(this.propeller.angle > 1.0)
 			this.propeller.angle = 0;
-		else
+		else{
+      if(vec_norm(this.vel_vec) != 0)
 			this.propeller.angle = ((this.time%1000)/1000)*vec_norm(this.vel_vec);
+      else {
+        this.propeller.angle = ((this.time%1000)/1000);
+      }
+    }
 
 			this.rudder_r *= 0.95;
 			this.elevator_r *= 0.95;
-    //this.rot_matrix = compute_orientation(this.init_ori, this.vel_vec);
 
-    //this.update_vec_r[0] = normalize(sub_vecs( this.init_ori , this.vel_vec ))[0]*Math.PI/2;
-    //this.update_vec_r[1] = normalize(sub_vecs( this.init_ori ,this.vel_vec) )[1]*Math.PI/2;
-    //this.update_vec_r[2] = normalize(sub_vecs(this.init_ori , this.vel_vec) )[2]*Math.PI/2;
-
-    //	alert(sub_vecs( normalize(this.update_vec_r) , normalize(this.vel_vec) ));
-
-    //this.display();
 }

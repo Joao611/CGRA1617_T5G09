@@ -10,6 +10,11 @@ function LightingScene() {
 	CGFscene.call(this);
 }
 
+function vec_norm(vec){
+	return Math.sqrt(vec[0]*vec[0] + vec[1]*vec[1] +vec[2]*vec[2]  );
+}
+
+
 LightingScene.prototype = Object.create(CGFscene.prototype);
 LightingScene.prototype.constructor = LightingScene;
 
@@ -134,7 +139,6 @@ LightingScene.prototype.initLights = function() {
 	this.lights[2].setDiffuse(1.0, 1.0, 1.0, 1.0);
 	this.lights[2].setSpecular(1.0, 1.0, 1.0, 1.0);
 	this.lights[2].setConstantAttenuation(0.0);
-	//this.lights[2].setLinearAttenuation(0.2);
 	this.lights[2].setLinearAttenuation(1.0);
 	this.lights[2].setQuadraticAttenuation(0.0);
 	this.lights[2].enable();
@@ -222,12 +226,6 @@ LightingScene.prototype.update = function(currTime) {
 	this.clock.update(currTime);
 	this.submarine.update(currTime);
 
-	/*let pos_vec = vec3.fromValues(this.submarine.update_vec[0]-10, this.submarine.update_vec[1]+3, this.submarine.update_vec[2]);
-	this.camera.setPosition(pos_vec);
-
-	let tar_vec = vec4.fromValues(this.submarine.update_vec[0]+1, this.submarine.update_vec[1], this.submarine.update_vec[2],1);
-	this.camera.setTarget(tar_vec); */
-
 	for (let k = 0; k < this.targets.length; k++) {
 			this.targets[k].update(currTime);
 			let targetInd = this.targets.indexOf(this.targets[k]);
@@ -240,8 +238,6 @@ LightingScene.prototype.update = function(currTime) {
 			this.torpedoes.splice(i, 1);
 			let targetInd = this.targets.indexOf(this.targets[i]);
 			this.targets[targetInd].target_explode = true;
-			//if(this.targets[targetInd].radius < 0.1)
-			//	this.targets.splice(targetInd, 1);
 		} else {
 			this.torpedoes[i].update(currTime);
 		}
@@ -260,25 +256,6 @@ function getOrientationVector(xzAngle, xyAngle) {
 // forward: bool	this.torpedoes.pop();
 LightingScene.prototype.moveSubmarine = function(forward) {
 	let subMovement = 1;
-	/*this.pushMatrix();
-		this.loadIdentity();
-		if (forward) {
-			let transArg = getOrientationVector(this.submarine.xzOrientation, this.submarine.xyOrientation).map(x => x * subMovement);
-			this.translate(transArg[0], transArg[1], transArg[2]);
-			this.submarine.x += transArg[0];
-			this.submarine.y += transArg[1];
-			this.submarine.z += transArg[2];
-		} else {
-			let transArg = getOrientationVector(this.submarine.xzOrientation, this.submarine.xyOrientation).map(x => x * -subMovement);
-			this.translate(transArg[0], transArg[1], transArg[2]);
-			this.submarine.x += transArg[0];
-			this.submarine.y += transArg[1];
-			this.submarine.z += transArg[2];
-		}
-		this.multMatrix(this.subMatrix);
-		this.subMatrix = this.getMatrix();
-	this.popMatrix();
-	*/
 
 	if (forward) {
 		this.submarine.vel_vec[0] += forward;
@@ -290,40 +267,21 @@ LightingScene.prototype.moveSubmarine = function(forward) {
 // right: bool
 LightingScene.prototype.rotateSubmarine = function(right) {
 	let rotAng = 5; // degrees
-	/*this.pushMatrix();
-		this.loadIdentity();
-		this.translate(this.submarine.x, this.submarine.y, this.submarine.z); //move back to actual position
-		if (right) {
-			this.rotate(rotAng * degToRad, 0, 1, 0);
-			this.submarine.xzOrientation -= rotAng;
-		} else {
-			this.rotate(-rotAng * degToRad, 0, 1, 0);
-			this.submarine.xzOrientation += rotAng;
-		}
-		this.submarine.xzOrientation %= 360;
-		this.translate(-this.submarine.x, -this.submarine.y, -this.submarine.z); //move to origin
-		this.multMatrix(this.subMatrix);
-		this.subMatrix = this.getMatrix();
-	this.popMatrix();
-	*/
 
+	if( vec_norm(this.submarine.vel_vec) != 0 )
 	this.submarine.update_vec_r[1] += 0.01*right;
 	if(this.submarine.elevator_r == 0)
 		this.submarine.elevator_r = 0.09;
 	if(right != 0)
 		this.submarine.elevator_r = (right+0.1);
 
-	/*
-	if (right) {
-		this.submarine.update_vec_r[1] += rotAng * degToRad;
-	} else {
-		this.submarine.update_vec_r[1] -= rotAng * degToRad;
-	} */
+
 
 }
 
 LightingScene.prototype.rotateSubmarine_up = function(up){
-	this.submarine.update_vec_r[2] += 0.01*up;
+	if( vec_norm(this.submarine.vel_vec) != 0 )
+			this.submarine.update_vec_r[2] += 0.01*up;
 	this.submarine.rudder_r = up;
 }
 
