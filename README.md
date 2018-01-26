@@ -1,5 +1,5 @@
-# CGRA1617_T5G09
+# CGRA
 
 ## Authors
-[*] Gonçalo Vasconcelos Cunha Miranda Moreno
-[*] João Francisco Veríssimo Dias Esteves
+* Gonçalo Vasconcelos Cunha Miranda Moreno
+* João Francisco Veríssimo Dias Esteves
